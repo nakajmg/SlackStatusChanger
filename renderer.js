@@ -9,6 +9,7 @@ const {Picker} = require('emoji-mart-vue')
 const {Emoji} = require('emoji-mart-vue')
 const wifiName = require('wifi-name')
 const types = require('./store/types')
+const components = require('./components')
 
 new Vue({
   el: '#app',
@@ -16,20 +17,9 @@ new Vue({
   <div class="App">
     <template v-if="initialized">
       <div class="App-Status">
-        <div class="CurrentStatus">
-          <Emoji class="emoji" :emoji="profile.status_emoji" :set="emojiSet" @click="changeEmoji"></Emoji>
-          <span class="text">
-            <input type="text" :value="profile.status_text" @change="onChangeText">
-          </span>
-        </div>
+        <CurrentStatus/>
       </div>
-      <div class="StatusList">
-        <div @click="setStatus(item)" v-for="item in preset" class="StatusList-Item">
-          <Emoji :emoji="item.status_emoji" :set="emojiSet"></Emoji>
-          <span class="text">{{item.status_text}}</span>
-        </div>
-      </div>
-      <Picker v-if="showPicker" :set="emojiSet" @click="onClickEmoji" :sheetSize="32" :perLine="7"></Picker>
+      <StatusList/>
     </template>
   </div>
   `,
@@ -80,8 +70,8 @@ new Vue({
       this.showPicker = true
     }
   }),
-  components: {
+  components: assign({
     Picker,
     Emoji
-  }
+  }, components)
 })
