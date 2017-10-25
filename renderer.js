@@ -50,7 +50,6 @@ new Vue({
   },
   created() {
     this.initializeStore()
-    this.$store.dispatch(types.INITIALIZE_STATUS)
     setInterval(() => {
       wifiName().then((ssid) => {
         return console.log(ssid)

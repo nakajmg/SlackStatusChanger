@@ -24,7 +24,7 @@ menubar.on('ready', () => {
       .then(res => res.data)
       .then(body => {
         menubar.window.webContents.send(types.SET_CURRENT_STATUS, body.profile)
-        console.log('app is ready')
+        console.log('initialize success')
       })
       .catch(err => {
         console.log(err.message)
