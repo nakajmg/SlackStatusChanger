@@ -5,7 +5,7 @@ const {mapActions, mapState} = require('vuex')
 module.exports = {
   template: `
   <div class="ToolBar">
-    <!--<Emoji @click="resetData" emoji=":scissors:" :set="emojiSet" title="Reset Preference"/>-->
+    <Emoji @click="resetData" emoji=":scissors:" :set="emojiSet" title="Reset Preference"/>
     <Emoji @click="syncStatus" emoji=":arrows_counterclockwise:" :set="emojiSet" title="Sync Status"/>
     <Emoji @click="openPreference" emoji=":gear:" :set="emojiSet" title="Open Preference"/>
   </div>
