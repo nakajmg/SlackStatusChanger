@@ -1,6 +1,11 @@
 module.exports = {
+  SAVE_TO_STORAGE: 'saveToStorage',
+  RESTORE_FROM_STORAGE: 'restoreFromStorage',
+  STORAGE_DATA: 'storageData',
+  CHECK_TOKEN: 'checkToken',
+  INITIALIZE_STORE: 'initializeStore',
   INITIALIZE_STATUS: 'initializeStatus',
-  INITIALIZED: 'initialized',
+  AFTER_INITIALIZE: 'initialized',
   CHANGE_STATUS: 'changeStatus',
   SET_CURRENT_STATUS: 'setCurrentStatus',
   SET_CURRENT_SSID: 'setCurrentSSID',

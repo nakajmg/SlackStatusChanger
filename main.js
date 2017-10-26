@@ -58,7 +58,10 @@ menubar.on('ready', () => {
   })
 
 
-  ipcMain.on(types.OPEN_PREFERENCE, (e, {state}) => {
+  /**
+   * 設定画面開く
+   */
+  ipcMain.on(types.OPEN_PREFERENCE, (e) => {
     const preference = new BrowserWindow({
       width: 640,
       height: 480,
@@ -69,13 +72,17 @@ menubar.on('ready', () => {
     });
     preference.loadURL(`file://${__dirname}/preference.html`)
     preference.on('ready-to-show', () => {
-      preference.webContents.send(types.INIT_PREFERENCE, {state})
       preference.show()
     })
 
     preference.on('close', () => {
       menuWindow.send(types.CLOSE_PREFERENCE)
     })
+  })
+
+  // preferenceでデータを更新したらmenuWindowで更新処理
+  ipcMain.on(types.UPDATE_PREFERENCE, (e, payload) => {
+    menuWindow.send(types.UPDATE_PREFERENCE, payload)
   })
 
 

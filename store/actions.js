@@ -1,12 +1,18 @@
 const types = require('./types')
 const {ipcRenderer} = require('electron')
 const {isUndefined, find, includes} = require('lodash')
+const storage = require('electron-json-storage')
+const assign = require('object-assign')
+const Promise = require('bluebird')
+const getStorage = Promise.promisify(storage.get)
+const setStorage = Promise.promisify(storage.set)
 
 module.exports = {
-  [types.INITIALIZE_STATUS]({commit}) {
-    // localstorageからの復元とか
-    ipcRenderer.send(types.INITIALIZE_STATUS)
-    commit(types.INITIALIZED)
+  [types.INITIALIZE_STORE]({commit, dispatch}) {
+    ipcRenderer.on(types.UPDATE_PREFERENCE, (e, payload) => {
+      commit(types.UPDATE_PREFERENCE, payload)
+      dispatch(types.SAVE_TO_STORAGE)
+    })
 
     ipcRenderer.on(types.SET_CURRENT_STATUS, (e, profile) => {
       commit(types.SET_CURRENT_STATUS, profile)
@@ -15,10 +21,41 @@ module.exports = {
     ipcRenderer.on(types.CLOSE_PREFERENCE, (e) => {
       console.log('preference closed')
     })
+    return dispatch(types.RESTORE_FROM_STORAGE)
+  },
+  [types.RESTORE_FROM_STORAGE]({commit}) {
+    return getStorage(types.STORAGE_DATA)
+      .then(data => {
+        commit(types.RESTORE_FROM_STORAGE, {data})
+      })
+      .catch(console.error)
+  },
 
-    ipcRenderer.on(types.UPDATE_PREFERENCE, (e, payload) => {
-      console.log(payload)
-    })
+  [types.SAVE_TO_STORAGE]({state}) {
+    const clonedData = assign({}, state)
+    delete clonedData.initialized
+    delete clonedData.prevSSID
+
+    return setStorage(types.STORAGE_DATA, clonedData)
+      .then(console.log)
+      .catch(console.error)
+  },
+
+  [types.CHECK_TOKEN]({state}) {
+    return new Promise((s, f) => {})
+  },
+
+  [types.INITIALIZE_STATUS]({state, dispatch}) {
+    // localstorageからの復元とか
+    ipcRenderer.send(types.INITIALIZE_STATUS)
+    dispatch(types.AFTER_INITIALIZE)
+  },
+
+  [types.AFTER_INITIALIZE]({commit, dispatch}) {
+    dispatch(types.SAVE_TO_STORAGE)
+      .then(() => {
+        commit(types.AFTER_INITIALIZE)
+      })
   },
 
   [types.SET_CURRENT_SSID]({state, commit, dispatch}, {ssid}) {

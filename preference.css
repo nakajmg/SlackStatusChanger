@@ -7,9 +7,10 @@ html, body {
   line-height: 1.6;
   color: #333;
   background-color: rgb(231, 231, 231);
-  -webkit-app-region: drag;
 }
 .Header {
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
   min-height: 22px;
   box-shadow: inset 0 1px 0 #f5f4f5;
   background-color: #e8e6e8;

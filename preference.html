@@ -7,20 +7,51 @@
   <link rel="stylesheet" href="./preference.css">
 </head>
 <body>
-  <div>
-    <header class="Header">
-      <div class="Header__Title">
-        Preference
-      </div>
-    </header>
-    <div class="bg">
-    </div>
-  </div>
+  <div id="preference"></div>
   <script>
     const {ipcRenderer} = require('electron')
     const types = require('./store/types')
-    ipcRenderer.on(types.INIT_PREFERENCE, (e, {state}) => {
-      console.log(state)
+    const Vue = require('vue/dist/vue.common')
+    const storage = require('electron-json-storage')
+    storage.get(types.STORAGE_DATA, (err, data) => {
+      if (err) return console.log(err)
+      console.log(data)
+    })
+    // API token取得方法をREADMEに書いてリンク貼る
+    new Vue({
+      el: '#preference',
+      template: `
+      <div>
+        <header class="Header">
+          <div class="Header__Title">
+            Preference
+          </div>
+        </header>
+        <div>
+          <input :value="apiToken" ref="tokenInput" type="text" placeholder="Input your api token">
+          <button @click="saveToken">save</button>
+        </div>
+      </div>
+      `,
+      data() {
+        return {
+          apiToken: null,
+        }
+      },
+      created() {
+        storage.get(types.STORAGE_DATA, (err, data) => {
+          if (err) return console.log(err)
+          this.apiToken = data.apiToken
+        })
+      },
+      methods: {
+        saveToken() {
+          // Tokenの検証してから保存する
+          // 検証が成功したら通知出す
+          const apiToken = this.$refs.tokenInput.value
+          ipcRenderer.send(types.UPDATE_PREFERENCE, {apiToken})
+        }
+      }
     })
   </script>
 </body>
