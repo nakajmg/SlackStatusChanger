@@ -29,13 +29,13 @@
             Preference
           </div>
           <div class="Menu">
-            <span class="MenuItem">
-              <Emoji emoji=":key:" :set="emojiSet"/>
-              <span class="MenuItem__label">Token</span>
-            </span>
-            <span class="MenuItem">
-              <Emoji emoji=":smiley:" :set="emojiSet"/>
-              <span class="MenuItem__label">Emoji</span>
+            <span class="MenuItem"
+              v-for="menu in menuItems"
+              :class="{'-active': isSelectedMenu(menu.type)}"
+              @click="selectMenu(menu.type)"
+            >
+              <Emoji :emoji="menu.emoji" :set="emojiSet"/>
+              <span class="MenuItem__label">{{menu.label}}</span>
             </span>
           </div>
         </header>
@@ -66,12 +66,28 @@
                 </div>
               </label>
             </div>
+            <div class="EmojiStyle__Caution">
+              This preference is only for display on app. <br> See Slack Preferences > Messages & Media > Emoji Style.
+            </div>
           </div>
         </section>
       </div>
       `,
       data() {
         return {
+          menuItems: [
+            {
+              label: 'Token',
+              emoji: ':key:',
+              type: 'token',
+            },
+            {
+              label: 'Emoji',
+              emoji: ':smiley:',
+              type: 'emoji',
+            },
+          ],
+          selectedMenu: 'token',
           apiToken: null,
           emojiSet: null,
           emojiSetList: [
@@ -91,7 +107,7 @@
               label: 'Emoji One',
               value: 'emojione',
             },
-          ]
+          ],
         }
       },
       created() {
@@ -118,6 +134,13 @@
         
         update(payload) {
           ipcRenderer.send(types.UPDATE_PREFERENCE, payload)
+        },
+        
+        isSelectedMenu(type) {
+          return this.selectedMenu === type
+        },
+        selectMenu(type) {
+          this.selectedMenu = type
         }
       },
       

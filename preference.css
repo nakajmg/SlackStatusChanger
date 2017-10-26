@@ -64,10 +64,19 @@ html, body {
 
 .EmojiStyle {
   background-color: #fff;
-  padding: 5px;
+  padding: 7px;
   border-radius: 2px;
   box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.24);
+  -webkit-user-select: none;
 }
+  .EmojiStyle__Caution {
+    font-size: 12px;
+    padding: 4px 0;
+    color: #099bf1;
+    text-shadow: none;
+    text-align: right;
+    line-height: 1.5;
+  }
 
 .EmojiType {
   display: inline-flex;
