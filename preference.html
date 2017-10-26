@@ -29,9 +29,13 @@
             Preference
           </div>
           <div class="Menu">
-            <span class="MenuItem -active">
+            <span class="MenuItem">
               <Emoji emoji=":key:" :set="emojiSet"/>
               <span class="MenuItem__label">Token</span>
+            </span>
+            <span class="MenuItem">
+              <Emoji emoji=":smiley:" :set="emojiSet"/>
+              <span class="MenuItem__label">Emoji</span>
             </span>
           </div>
         </header>
@@ -46,12 +50,48 @@
             <button @click="saveToken" class="button is-info is-pulled-right">Save</button>
           </div>
         </section>
+        
+        <section class="Contents">
+          <div class="field">
+            <label class="label">Emoji Style</label>
+            <div class="EmojiStyle control">
+              <label class="radio" v-for="emojiType in emojiSetList">
+                <input type="radio" name="emojiSet" style="display: none;"
+                  v-model="emojiSet"
+                  :value="emojiType.value"
+                >
+                <div class="EmojiType">
+                  <Emoji :size="20" emoji=":smiley:" :set="emojiType.value"/>
+                  <span>&nbsp;{{emojiType.label}}</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </section>
       </div>
       `,
       data() {
         return {
           apiToken: null,
           emojiSet: null,
+          emojiSetList: [
+            {
+              label: 'Apple',
+              value: 'apple',
+            },
+            {
+              label: 'Google',
+              value: 'google',
+            },
+            {
+              label: 'Twitter',
+              value: 'twitter',
+            },
+            {
+              label: 'Emoji One',
+              value: 'emojione',
+            },
+          ]
         }
       },
       created() {
@@ -61,12 +101,23 @@
           this.emojiSet = data.emojiSet
         })
       },
+      watch: {
+        emojiSet(newVal, oldVal) {
+          if (!oldVal) return
+          this.update({emojiSet: newVal})
+        }
+      },
+      
       methods: {
         saveToken() {
           // Tokenの検証してから保存する
           // 検証が成功したら通知出す
           const apiToken = this.$refs.tokenInput.value
-          ipcRenderer.send(types.UPDATE_PREFERENCE, {apiToken})
+          this.update({apiToken})
+        },
+        
+        update(payload) {
+          ipcRenderer.send(types.UPDATE_PREFERENCE, payload)
         }
       },
       

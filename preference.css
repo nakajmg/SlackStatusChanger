@@ -25,9 +25,10 @@ html, body {
 .Contents {
   background-color: rgb(226, 226, 226);
   border: 1px solid rgb(212, 212, 212);
-  border-radius: 3px;
+  border-radius: 2px;
   padding: 10px;
   margin: 15px;
+  text-shadow: 1px 1px 0 rgba(0,0,0, .1);
 }
 
 .Menu {
@@ -35,6 +36,7 @@ html, body {
   align-items: center;
   padding: 5px 5px 0;
   border-bottom: 1px solid rgb(195, 195, 195);
+  /*display: none;*/
 }
 .MenuItem {
   height: 50px;
@@ -43,6 +45,7 @@ html, body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  cursor: pointer;
 }
 .MenuItem__label {
   font-size: 10px;
@@ -59,3 +62,23 @@ html, body {
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0%, rgb(175, 175, 175)), color-stop(100%, rgb(195, 195, 195)));
 }
 
+.EmojiStyle {
+  background-color: #fff;
+  padding: 5px;
+  border-radius: 2px;
+  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.24);
+}
+
+.EmojiType {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 2px;
+  padding: 5px;
+  font-size: 16px;
+  /*background-color: #d4d4d4;*/
+  /*text-shadow: 1px 1px 0 rgba(0,0,0, .1);*/
+}
+input[name="emojiSet"]:checked + .EmojiType {
+  color: #fff;
+  background-color: #2d9ee0;
+}
