@@ -34,19 +34,23 @@ module.exports = {
   methods: assign({
     startWatcher() {
       this.stopWatcher()
-      this.watcher = setInterval(() => {
-        wifiName().then((ssid) => {
-          console.log(ssid)
-          this.setSSID({ssid})
-        }, (err) => {
-          console.log(err)
-        })
-      }, this.autorun.interval)
+      this.watcher = setInterval(() => this.setSSID(), this.autorun.interval)
     },
     stopWatcher() {
-      this.watcher && clearInterval(this.watcher)
+      if (this.watcher) {
+        clearInterval(this.watcher)
+        this.watcher = null
+      }
     },
+    setSSID() {
+      wifiName().then((ssid) => {
+        this.setCurrentSSID({ssid})
+      }, (err) => {
+        this.setCurrentSSID({ssid: ''})
+        console.log(err)
+      })
+    }
   }, mapActions({
-    setSSID: types.SET_CURRENT_SSID,
+    setCurrentSSID: types.SET_CURRENT_SSID,
   }))
 }

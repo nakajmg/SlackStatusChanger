@@ -1,8 +1,8 @@
 html, body {
   margin: 0;
   padding: 0;
-  -webkit-app-region: drag;
   -webkit-user-select: none;
+  -webkit-app-region: no-drag;
   height: 100vh;
   width: 100%;
 }
@@ -38,6 +38,7 @@ html, body {
     display: flex;
     justify-content: flex-end;
     border-top: 1px solid #d9d9d9;
+    background-color: rgb(217, 217, 217);
   }
 
   

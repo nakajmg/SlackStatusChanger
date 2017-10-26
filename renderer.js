@@ -19,7 +19,7 @@ new Vue({
       </div>
       <Watcher/>
       <div class="App-Footer">
-        <Emoji class="SettingsIcon" emoji=":gear:"/>
+        <Emoji @click="openPreference" class="SettingsIcon" emoji=":gear:"/>
       </div>
     </template>
   </div>
@@ -41,6 +41,7 @@ new Vue({
     // local methods
   }, mapActions({
     initializeStore: types.INITIALIZE_STATUS,
+    openPreference: types.OPEN_PREFERENCE,
   })),
   components: assign({
     // local components

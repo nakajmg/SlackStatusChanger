@@ -1,4 +1,5 @@
 //const electron = require('electron')
+const {BrowserWindow} = require('electron')
 const {ipcMain} = require('electron')
 const types = require('./store/types')
 
@@ -13,6 +14,7 @@ const request = require('axios')
 
 menubar.on('ready', () => {
   console.log('ready')
+  const menuWindow = menubar.window.webContents
   ipcMain.on(types.INITIALIZE_STATUS, (e) => {
     request({
       url: 'https://slack.com/api/users.profile.get',
@@ -23,7 +25,7 @@ menubar.on('ready', () => {
     })
       .then(res => res.data)
       .then(body => {
-        menubar.window.webContents.send(types.SET_CURRENT_STATUS, body.profile)
+        menuWindow.send(types.SET_CURRENT_STATUS, body.profile)
         console.log('initialize success')
       })
       .catch(err => {
@@ -48,17 +50,40 @@ menubar.on('ready', () => {
       .then(res => res.data)
       .then(body => {
         console.log(body.ok, body.profile.status_emoji, body.profile.status_text)
-        menubar.window.webContents.send(types.SET_CURRENT_STATUS, body.profile)
+        menuWindow.send(types.SET_CURRENT_STATUS, body.profile)
       })
       .catch(err => {
         console.log(err)
       })
   })
 
+
+  ipcMain.on(types.OPEN_PREFERENCE, (e, {state}) => {
+    const preference = new BrowserWindow({
+      width: 640,
+      height: 480,
+      titleBarStyle: 'hidden',
+      fullscreenable: false,
+      maximizable: false,
+      show: false,
+    });
+    preference.loadURL(`file://${__dirname}/preference.html`)
+    preference.on('ready-to-show', () => {
+      preference.webContents.send(types.INIT_PREFERENCE, {state})
+      preference.show()
+    })
+
+    preference.on('close', () => {
+      menuWindow.send(types.CLOSE_PREFERENCE)
+    })
+  })
+
+
+//  preference.show()
 })
 
+
 //const app = electron.app
-//const BrowserWindow = electron.BrowserWindow
 //const path = require('path')
 //const url = require('url')
 // Keep a global reference of the window object, if you don't, the window will

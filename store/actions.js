@@ -7,8 +7,17 @@ module.exports = {
     // localstorageからの復元とか
     ipcRenderer.send(types.INITIALIZE_STATUS)
     commit(types.INITIALIZED)
+
     ipcRenderer.on(types.SET_CURRENT_STATUS, (e, profile) => {
       commit(types.SET_CURRENT_STATUS, profile)
+    })
+
+    ipcRenderer.on(types.CLOSE_PREFERENCE, (e) => {
+      console.log('preference closed')
+    })
+
+    ipcRenderer.on(types.UPDATE_PREFERENCE, (e, payload) => {
+      console.log(payload)
     })
   },
 
@@ -36,5 +45,9 @@ module.exports = {
       status_emoji: isUndefined(status_emoji) ? state.profile.status_emoji : status_emoji,
       status_text: isUndefined(status_text) ? state.profile.status_text : status_text,
     })
+  },
+
+  [types.OPEN_PREFERENCE]({state}) {
+    ipcRenderer.send(types.OPEN_PREFERENCE, {state})
   }
 }
