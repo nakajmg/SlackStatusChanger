@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <title>Preference</title>
+  <link rel="stylesheet" href="./node_modules/bulma/css/bulma.css">
   <link rel="stylesheet" href="./preference.css">
 </head>
 <body>
@@ -11,12 +12,13 @@
   <script>
     const {ipcRenderer} = require('electron')
     const types = require('./store/types')
+    const {Emoji} = require('emoji-mart-vue')
     const Vue = require('vue/dist/vue.common')
     const storage = require('electron-json-storage')
-    storage.get(types.STORAGE_DATA, (err, data) => {
-      if (err) return console.log(err)
-      console.log(data)
-    })
+//    storage.get(types.STORAGE_DATA, (err, data) => {
+//      if (err) return console.log(err)
+//      console.log(data)
+//    })
     // API token取得方法をREADMEに書いてリンク貼る
     new Vue({
       el: '#preference',
@@ -26,22 +28,37 @@
           <div class="Header__Title">
             Preference
           </div>
+          <div class="Menu">
+            <span class="MenuItem -active">
+              <Emoji emoji=":key:" :set="emojiSet"/>
+              <span class="MenuItem__label">Token</span>
+            </span>
+          </div>
         </header>
-        <div>
-          <input :value="apiToken" ref="tokenInput" type="text" placeholder="Input your api token">
-          <button @click="saveToken">save</button>
-        </div>
+        <section class="Contents">
+          <div class="field">
+            <label class="label">API token</label>
+            <div class="control">
+              <input :value="apiToken" ref="tokenInput" class="input" type="text" placeholder="Input your API token">
+            </div>
+          </div>
+          <div class="field is-clearfix">
+            <button @click="saveToken" class="button is-info is-pulled-right">Save</button>
+          </div>
+        </section>
       </div>
       `,
       data() {
         return {
           apiToken: null,
+          emojiSet: null,
         }
       },
       created() {
         storage.get(types.STORAGE_DATA, (err, data) => {
           if (err) return console.log(err)
           this.apiToken = data.apiToken
+          this.emojiSet = data.emojiSet
         })
       },
       methods: {
@@ -51,6 +68,10 @@
           const apiToken = this.$refs.tokenInput.value
           ipcRenderer.send(types.UPDATE_PREFERENCE, {apiToken})
         }
+      },
+      
+      components: {
+        Emoji
       }
     })
   </script>

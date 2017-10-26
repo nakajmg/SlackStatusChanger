@@ -21,3 +21,41 @@ html, body {
   .Header__Title {
     text-align: center;
   }
+
+.Contents {
+  background-color: rgb(226, 226, 226);
+  border: 1px solid rgb(212, 212, 212);
+  border-radius: 3px;
+  padding: 10px;
+  margin: 15px;
+}
+
+.Menu {
+  display: flex;
+  align-items: center;
+  padding: 5px 5px 0;
+  border-bottom: 1px solid rgb(195, 195, 195);
+}
+.MenuItem {
+  height: 50px;
+  width: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.MenuItem__label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #3c3c3c;
+  /*background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0%, rgb(175, 175, 175)), color-stop(100%, rgb(195, 195, 195)));*/
+  /*background-color: */
+  /*175 ~ 193*/
+}
+
+.MenuItem.-active {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0%, rgb(175, 175, 175)), color-stop(100%, rgb(195, 195, 195)));
+}
+

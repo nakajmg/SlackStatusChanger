@@ -22,6 +22,7 @@
   "dependencies": {
     "axios": "^0.17.0",
     "bluebird": "^3.5.1",
+    "bulma": "^0.6.0",
     "electron-json-storage": "^4.0.2",
     "emoji-mart-vue": "^1.0.2",
     "lodash": "^4.17.4",
