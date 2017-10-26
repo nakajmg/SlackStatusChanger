@@ -4,7 +4,7 @@ const assign = require('object-assign')
 const types = require('../store/types')
 
 module.exports = {
-  template: '<div></div>',
+  template: '<div style="display: none;"></div>',
   data() {
     return {
       watcher: null
@@ -34,6 +34,7 @@ module.exports = {
   methods: assign({
     startWatcher() {
       this.stopWatcher()
+      this.setSSID()
       this.watcher = setInterval(() => this.setSSID(), this.autorun.interval)
     },
     stopWatcher() {
@@ -42,13 +43,12 @@ module.exports = {
         this.watcher = null
       }
     },
-    setSSID() {
-      wifiName().then((ssid) => {
-        this.setCurrentSSID({ssid})
-      }, (err) => {
-        this.setCurrentSSID({ssid: ''})
+    // 名前変えたい。change statusとか ssidセットするわけじゃないし
+    async setSSID() {
+      const ssid = await wifiName().catch(err => {
         console.log(err)
       })
+      this.setCurrentSSID({ssid})
     }
   }, mapActions({
     setCurrentSSID: types.SET_CURRENT_SSID,

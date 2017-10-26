@@ -17,15 +17,23 @@ module.exports = {
   preset: [
     {
       status_emoji: ':office:',
-      status_text: 'オフィスにいる',
+      status_text: 'In the office',
     },
     {
       status_emoji: ':house_with_garden:',
-      status_text: '家にいる',
+      status_text: 'In the house',
     },
     {
-      status_emoji: ':sushi:',
-      status_text: 'お寿司たべたい',
+      status_emoji: ':face_with_thermometer:',
+      status_text: 'Out sick',
+    },
+    {
+      status_emoji: ':palm_tree:',
+      status_text: 'Vacationing'
+    },
+    {
+      status_emoji: ':bus:',
+      status_text: 'Commuting'
     },
   ],
 
@@ -37,8 +45,8 @@ module.exports = {
       {
         enable: true,
         ssid: 'jmghome',
-        status_emoji: ':sushi:',
-        status_text: 'お寿司たべたい',
+        status_emoji: ':house_with_garden:',
+        status_text: '家にいる',
       },
       {
         enable: true,

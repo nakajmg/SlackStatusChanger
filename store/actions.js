@@ -8,6 +8,10 @@ const getStorage = Promise.promisify(storage.get)
 const setStorage = Promise.promisify(storage.set)
 
 module.exports = {
+  [types.RESET_DATA]() {
+    setStorage(types.STORAGE_DATA, {})
+  },
+
   [types.INITIALIZE_STORE]({commit, dispatch}) {
     ipcRenderer.on(types.UPDATE_PREFERENCE, (e, payload) => {
       commit(types.UPDATE_PREFERENCE, payload)
@@ -23,12 +27,9 @@ module.exports = {
     })
     return dispatch(types.RESTORE_FROM_STORAGE)
   },
-  [types.RESTORE_FROM_STORAGE]({commit}) {
-    return getStorage(types.STORAGE_DATA)
-      .then(data => {
-        commit(types.RESTORE_FROM_STORAGE, {data})
-      })
-      .catch(console.error)
+  async [types.RESTORE_FROM_STORAGE]({commit}) {
+    const data = await getStorage(types.STORAGE_DATA).catch(console.error)
+    commit(types.RESTORE_FROM_STORAGE, {data})
   },
 
   [types.SAVE_TO_STORAGE]({state}) {
@@ -45,9 +46,16 @@ module.exports = {
     return new Promise((s, f) => {})
   },
 
-  [types.INITIALIZE_STATUS]({state, dispatch}) {
-    // localstorageからの復元とか
+  [types.SYNC_STATUS]() {
     ipcRenderer.send(types.INITIALIZE_STATUS)
+  },
+
+  [types.CLEAR_STATUS]() {
+    ipcRenderer.send(types.SET_CURRENT_STATUS, {status_emoji: '', status_text: ''})
+  },
+
+  [types.INITIALIZE_STATUS]({dispatch}) {
+    dispatch(types.SYNC_STATUS)
     dispatch(types.AFTER_INITIALIZE)
   },
 

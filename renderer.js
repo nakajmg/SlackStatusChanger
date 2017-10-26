@@ -26,7 +26,9 @@ new Vue({
       </div>
     </template>
     <div class="App-Footer">
-      <Emoji @click="openPreference" class="SettingsIcon" emoji=":gear:"/>
+      <div class="ToolBar">
+        <ToolBar/>
+      </div>
     </div>
   </div>
   `,
@@ -36,22 +38,20 @@ new Vue({
     }
   },
 
-  created() {
-    this.initializeStore()
-      .then(() => {
-        return new Promise((resolve, reject) => {
-          console.log(this.apiToken)
-          if (this.apiToken) return resolve()
-          // tokenなかったら強制的にpreference開いてもよさそう
-          this.$store.watch(
-            state => state.apiToken,
-            apiToken => resolve(apiToken)
-          )
-        })
-      })
-      .then(() => {
-        this.initializeStatus()
-      })
+  async created() {
+    await this.initializeStore()
+    await new Promise((resolve, reject) => {
+      if (this.apiToken) return resolve()
+      this.openPreference()
+      const watcher = this.$store.watch(
+        state => state.apiToken,
+        apiToken => {
+          watcher()
+          resolve(apiToken)
+        }
+      )
+    })
+    this.initializeStatus()
   },
 
   computed: assign({
