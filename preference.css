@@ -30,6 +30,13 @@ html, body {
   margin: 15px;
   text-shadow: 1px 1px 0 rgba(0,0,0, .1);
 }
+  .Contents__Label {
+    display: inline-flex;
+    align-items: center;
+  }
+  .Contents__Label .emoji-mart-emoji {
+    margin-right: 5px;
+  }
 
 .Menu {
   display: flex;
@@ -90,4 +97,20 @@ html, body {
 input[name="emojiSet"]:checked + .EmojiType {
   color: #fff;
   background-color: #2d9ee0;
+}
+
+.PresetItem__Remove {
+  pointer-events: initial !important;
+  opacity: 0.5;
+  cursor: pointer;
+}
+  .PresetItem__Remove:hover {
+    opacity: 1.0;
+  }
+.PresetItem__Emoji {
+  pointer-events: initial !important;
+  cursor: pointer;
+}
+.PresetItem__Add {
+  cursor: pointer;
 }

@@ -41,19 +41,28 @@
         </header>
         <section class="Contents">
           <div class="field">
-            <label class="label">API token</label>
+            <label class="label Contents__Label">
+              <Emoji emoji=":key:" :set="emojiSet" :size="20"/>
+              <span>API token</span>
+            </label>
             <div class="control">
               <input :value="apiToken" ref="tokenInput" class="input" type="text" placeholder="Input your API token">
             </div>
           </div>
           <div class="field is-clearfix">
-            <button @click="saveToken" class="button is-info is-pulled-right">Save</button>
+            <button @click="saveToken" class="button is-info is-pulled-right">
+              <Emoji emoji=":heavy_check_mark:" :set="emojiSet" :size="16"/>
+              <span>&nbsp;&nbsp;Save</span>
+            </button>
           </div>
         </section>
         
         <section class="Contents">
           <div class="field">
-            <label class="label">Emoji Style</label>
+            <label class="label Contents__Label">
+              <Emoji emoji=":smiley:" :set="emojiSet" :size="20"/>
+              <span>Emoji Style</span>
+            </label>
             <div class="EmojiStyle control">
               <label class="radio" v-for="emojiType in emojiSetList">
                 <input type="radio" name="emojiSet" style="display: none;"
@@ -68,6 +77,31 @@
             </div>
             <div class="EmojiStyle__Caution">
               This preference is only for display on app. <br> See Slack Preferences > Messages & Media > Emoji Style.
+            </div>
+          </div>
+        </section>
+        
+        <section class="Contents">
+          <div class="field">
+            <label class="label Contents__Label">
+              <Emoji emoji=":scroll:" :set="emojiSet" :size="20"/>
+              <span>Preset</span>
+            </label>
+            <div class="PresetItem" v-for="item in preset">
+              <div class="control has-icons-left has-icons-right">
+                <input class="input is-medium PresetItem__Text" :value="item.status_text">
+                <span class="icon is-left PresetItem__Emoji">
+                  <Emoji :emoji="item.status_emoji" :set="emojiSet"/>
+                </span>
+                <span class="icon is-right PresetItem__Remove">
+                  <Emoji emoji=":x:" :set="emojiSet" :size="16"/>
+                </span>
+              </div>
+            </div>
+            <div class="control is-clearfix" style="text-align: center;">
+              <span class="icon is-large">
+                <Emoji class="PresetItem__Add" emoji=":heavy_plus_sign:" :set="emojiSet"/>
+              </span>
             </div>
           </div>
         </section>
@@ -86,10 +120,16 @@
               emoji: ':smiley:',
               type: 'emoji',
             },
+            {
+              label: 'Preset',
+              emoji: ':scroll:',
+              type: 'preset',
+            },
           ],
           selectedMenu: 'token',
           apiToken: null,
           emojiSet: null,
+          preset: [],
           emojiSetList: [
             {
               label: 'Apple',
@@ -115,6 +155,7 @@
           if (err) return console.log(err)
           this.apiToken = data.apiToken
           this.emojiSet = data.emojiSet
+          this.preset = data.preset
         })
       },
       watch: {
