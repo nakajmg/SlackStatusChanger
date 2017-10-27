@@ -1,6 +1,6 @@
 const types = require('./types')
 const {ipcRenderer} = require('electron')
-const {isUndefined, find, includes} = require('lodash')
+const {isUndefined, find, includes, keys} = require('lodash')
 const storage = require('electron-json-storage')
 const assign = require('object-assign')
 const Promise = require('bluebird')
@@ -27,9 +27,16 @@ module.exports = {
     })
     return dispatch(types.RESTORE_FROM_STORAGE)
   },
-  async [types.RESTORE_FROM_STORAGE]({commit}) {
+  async [types.RESTORE_FROM_STORAGE]({commit, dispatch}) {
     const data = await getStorage(types.STORAGE_DATA).catch(console.error)
-    commit(types.RESTORE_FROM_STORAGE, {data})
+    // dataのkeyがあればデータあり
+    if (keys(data).length) {
+      return commit(types.RESTORE_FROM_STORAGE, {data})
+    }
+    else {
+      // 保存されたデータがないときはstateを初期値として保存しておく
+      return dispatch(types.SAVE_TO_STORAGE)
+    }
   },
 
   [types.SAVE_TO_STORAGE]({state}) {
@@ -92,7 +99,8 @@ module.exports = {
     })
   },
 
-  [types.OPEN_PREFERENCE]({state}) {
-    ipcRenderer.send(types.OPEN_PREFERENCE, {state})
+  [types.OPEN_PREFERENCE]({state}, preferenceName) {
+    preferenceName = preferenceName || 'preset'
+    ipcRenderer.send(types.OPEN_PREFERENCE, {preferenceName})
   }
 }

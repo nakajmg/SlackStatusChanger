@@ -91,6 +91,7 @@ html, body {
   box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.24);
   -webkit-user-select: none;
 }
+  .Caution ,
   .EmojiStyle__Caution {
     font-size: 12px;
     padding: 4px 0;
@@ -98,6 +99,18 @@ html, body {
     text-shadow: none;
     text-align: right;
     line-height: 1.5;
+  }
+  .Caution a {
+    color: inherit;
+    display: inline-flex;
+    align-items: center;
+  }
+  .Caution a:link:hover {
+    color: inherit;
+    text-decoration: underline;
+  }
+  .Caution .emoji-mart-emoji {
+    margin-right: 3px;
   }
 
 .EmojiType {

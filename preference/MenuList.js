@@ -18,9 +18,9 @@ module.exports = {
     return {
       menuItems: [
         {
-          label: 'Token',
-          emoji: ':key:',
-          type: 'token',
+          label: 'Preset',
+          emoji: ':scroll:',
+          type: 'preset',
         },
         {
           label: 'Autorun',
@@ -33,9 +33,9 @@ module.exports = {
           type: 'emoji',
         },
         {
-          label: 'Preset',
-          emoji: ':scroll:',
-          type: 'preset',
+          label: 'Token',
+          emoji: ':key:',
+          type: 'token',
         },
       ],
     }

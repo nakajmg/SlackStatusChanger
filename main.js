@@ -61,7 +61,8 @@ menubar.on('ready', () => {
   /**
    * 設定画面開く
    */
-  ipcMain.on(types.OPEN_PREFERENCE, (e) => {
+  ipcMain.on(types.OPEN_PREFERENCE, (e, {preferenceName}) => {
+    console.log(preferenceName)
     const preference = new BrowserWindow({
       width: 480,
       height: 400,
@@ -70,7 +71,7 @@ menubar.on('ready', () => {
       maximizable: false,
       show: false,
     });
-    preference.loadURL(`file://${__dirname}/preference.html`)
+    preference.loadURL(`file://${__dirname}/preference.html?name=${preferenceName}`)
     preference.on('ready-to-show', () => {
       preference.show()
     })

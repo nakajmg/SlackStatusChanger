@@ -42,7 +42,7 @@ new Vue({
     await this.initializeStore()
     await new Promise((resolve, reject) => {
       if (this.apiToken) return resolve()
-      this.openPreference()
+      this.openPreference('token')
       const watcher = this.$store.watch(
         state => state.apiToken,
         apiToken => {

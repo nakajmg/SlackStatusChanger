@@ -5,12 +5,14 @@ const storage = require('electron-json-storage')
 const assign = require('object-assign')
 const types = require('./store/types')
 const components = require('./preference/index')
+const queryString = require('query-string')
 
 Vue.component('Emoji', Emoji)
 
 // API token取得方法をREADMEに書いてリンク貼る
 storage.get(types.STORAGE_DATA, (err, data) => {
   if (err) return console.log(err)
+  console.log(data)
   initialize(data)
 })
 
@@ -34,8 +36,9 @@ function initialize(data) {
       </div>
       `,
     data() {
+      const parsed = queryString.parse(location.search)
       return assign({}, data, {
-        selectedMenu: 'token'
+        selectedMenu: parsed.name
       })
     },
 
