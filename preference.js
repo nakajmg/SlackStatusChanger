@@ -18,18 +18,19 @@ function initialize(data) {
   new Vue({
     el: '#preference',
     template: `
-      <div>
+      <div class="Preference">
         <header class="Header">
           <div class="Header__Title">
             Preference
           </div>
-          <MenuList :emojiSet="emojiSet" :selectedMenu="selectedMenu" /> 
+          <MenuList :emojiSet="emojiSet" v-model="selectedMenu"/> 
         </header>
-        
-        <APIToken :emojiSet="emojiSet" :apiToken="apiToken"/>
-        <Autorun :emojiSet="emojiSet" v-model="autorun"/>        
-        <EmojiStyle v-model="emojiSet"/>
-        <Preset :preset="preset" :emojiSet="emojiSet"/>
+        <main class="Main">
+          <APIToken v-show="isSelectedMenu('token')" :emojiSet="emojiSet" :apiToken="apiToken"/>
+          <Autorun v-show="isSelectedMenu('autorun')" :emojiSet="emojiSet" v-model="autorun"/>        
+          <EmojiStyle v-show="isSelectedMenu('emoji')" v-model="emojiSet"/>
+          <Preset v-show="isSelectedMenu('preset')" :preset="preset" :emojiSet="emojiSet"/>
+        </main>
       </div>
       `,
     data() {
@@ -42,7 +43,9 @@ function initialize(data) {
       update(payload) {
         ipcRenderer.send(types.UPDATE_PREFERENCE, payload)
       },
-
+      isSelectedMenu(type) {
+        return this.selectedMenu === type
+      }
     },
 
     components: assign({}, components)

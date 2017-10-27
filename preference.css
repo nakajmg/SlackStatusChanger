@@ -9,6 +9,7 @@ html, body {
   background-color: rgb(231, 231, 231);
 }
 .Header {
+  top: 0;
   -webkit-app-region: drag;
   -webkit-user-select: none;
   min-height: 22px;
@@ -21,8 +22,21 @@ html, body {
   .Header__Title {
     text-align: center;
   }
+  
+.Preference {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.Main {
+  max-height: calc(100vh - 76px);
+  /*overflow-y: scroll;*/
+  display: flex;
+  flex-direction: column;
+}
 
 .Contents {
+  overflow-y: scroll;
   background-color: rgb(226, 226, 226);
   border: 1px solid rgb(212, 212, 212);
   border-radius: 2px;
@@ -42,7 +56,7 @@ html, body {
   display: flex;
   align-items: center;
   padding: 5px 5px 0;
-  border-bottom: 1px solid rgb(195, 195, 195);
+  border-bottom: 1px solid rgba(195, 195, 195, 0.8);
   /*display: none;*/
 }
 .MenuItem {
@@ -52,7 +66,7 @@ html, body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  cursor: pointer;
+  cursor: pointer !important;
 }
 .MenuItem__label {
   font-size: 10px;
@@ -67,6 +81,7 @@ html, body {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0%, rgb(175, 175, 175)), color-stop(100%, rgb(195, 195, 195)));
+  box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.08);
 }
 
 .EmojiStyle {

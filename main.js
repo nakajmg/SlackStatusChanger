@@ -63,8 +63,8 @@ menubar.on('ready', () => {
    */
   ipcMain.on(types.OPEN_PREFERENCE, (e) => {
     const preference = new BrowserWindow({
-      width: 640,
-      height: 480,
+      width: 480,
+      height: 400,
       titleBarStyle: 'hidden',
       fullscreenable: false,
       maximizable: false,

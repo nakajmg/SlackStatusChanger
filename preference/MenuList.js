@@ -12,7 +12,7 @@ module.exports = {
   </div>
   `,
 
-  props: ['emojiSet', 'selectedMenu'],
+  props: ['emojiSet', 'value'],
 
   data() {
     return {
@@ -21,6 +21,11 @@ module.exports = {
           label: 'Token',
           emoji: ':key:',
           type: 'token',
+        },
+        {
+          label: 'Autorun',
+          emoji: ':traffic_light:',
+          type: 'autorun',
         },
         {
           label: 'Emoji',
@@ -38,10 +43,11 @@ module.exports = {
 
   methods: {
     selectMenu(type) {
-      this.selectedMenu = type
+      if (type === this.value) return
+      this.$emit('input', type)
     },
     isSelectedMenu(type) {
-      return this.selectedMenu === type
+      return this.value === type
     },
   }
 }
