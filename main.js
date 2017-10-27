@@ -1,4 +1,5 @@
 //const electron = require('electron')
+const {BrowserWindow} = require('electron')
 const {ipcMain} = require('electron')
 const types = require('./store/types')
 
@@ -13,6 +14,7 @@ const request = require('axios')
 
 menubar.on('ready', () => {
   console.log('ready')
+  const menuWindow = menubar.window.webContents
   ipcMain.on(types.INITIALIZE_STATUS, (e) => {
     request({
       url: 'https://slack.com/api/users.profile.get',
@@ -23,7 +25,7 @@ menubar.on('ready', () => {
     })
       .then(res => res.data)
       .then(body => {
-        menubar.window.webContents.send(types.SET_CURRENT_STATUS, body.profile)
+        menuWindow.send(types.SET_CURRENT_STATUS, body.profile)
         console.log('initialize success')
       })
       .catch(err => {
@@ -48,17 +50,54 @@ menubar.on('ready', () => {
       .then(res => res.data)
       .then(body => {
         console.log(body.ok, body.profile.status_emoji, body.profile.status_text)
-        menubar.window.webContents.send(types.SET_CURRENT_STATUS, body.profile)
+        menuWindow.send(types.SET_CURRENT_STATUS, body.profile)
       })
       .catch(err => {
         console.log(err)
       })
   })
 
+  let preference = null
+  /**
+   * 設定画面開く
+   */
+  ipcMain.on(types.OPEN_PREFERENCE, (e, {preferenceName}) => {
+    // 設定画面が開かれてたら既存の設定画面にフォーカス
+    if (preference) {
+      // 指定された設定項目を開く
+      preference.webContents.send(types.CHANGE_PREFERENCE_MENU, {preferenceName})
+      return preference.show()
+    }
+    preference = new BrowserWindow({
+      width: 480,
+      height: 400,
+      titleBarStyle: 'hidden',
+      fullscreenable: false,
+      maximizable: false,
+      show: false,
+    });
+    preference.loadURL(`file://${__dirname}/preference.html?name=${preferenceName}`)
+    preference.on('ready-to-show', () => {
+      preference.show()
+    })
+
+    preference.on('close', () => {
+      menuWindow.send(types.CLOSE_PREFERENCE)
+      preference = null
+    })
+  })
+
+  // preferenceでデータを更新したらmenuWindowで更新処理
+  ipcMain.on(types.UPDATE_PREFERENCE, (e, payload) => {
+    menuWindow.send(types.UPDATE_PREFERENCE, payload)
+  })
+
+
+//  preference.show()
 })
 
+
 //const app = electron.app
-//const BrowserWindow = electron.BrowserWindow
 //const path = require('path')
 //const url = require('url')
 // Keep a global reference of the window object, if you don't, the window will

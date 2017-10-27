@@ -1,15 +1,76 @@
 const types = require('./types')
 const {ipcRenderer} = require('electron')
-const {isUndefined, find, includes} = require('lodash')
+const {isUndefined, find, includes, keys} = require('lodash')
+const storage = require('electron-json-storage')
+const assign = require('object-assign')
+const Promise = require('bluebird')
+const getStorage = Promise.promisify(storage.get)
+const setStorage = Promise.promisify(storage.set)
 
 module.exports = {
-  [types.INITIALIZE_STATUS]({commit}) {
-    // localstorageからの復元とか
-    ipcRenderer.send(types.INITIALIZE_STATUS)
-    commit(types.INITIALIZED)
+  [types.RESET_DATA]() {
+    setStorage(types.STORAGE_DATA, {})
+  },
+
+  [types.INITIALIZE_STORE]({commit, dispatch}) {
+    ipcRenderer.on(types.UPDATE_PREFERENCE, (e, payload) => {
+      commit(types.UPDATE_PREFERENCE, payload)
+      dispatch(types.SAVE_TO_STORAGE)
+    })
+
     ipcRenderer.on(types.SET_CURRENT_STATUS, (e, profile) => {
       commit(types.SET_CURRENT_STATUS, profile)
     })
+
+    ipcRenderer.on(types.CLOSE_PREFERENCE, (e) => {
+      console.log('preference closed')
+    })
+    return dispatch(types.RESTORE_FROM_STORAGE)
+  },
+  async [types.RESTORE_FROM_STORAGE]({commit, dispatch}) {
+    const data = await getStorage(types.STORAGE_DATA).catch(console.error)
+    // dataのkeyがあればデータあり
+    if (keys(data).length) {
+      return commit(types.RESTORE_FROM_STORAGE, {data})
+    }
+    else {
+      // 保存されたデータがないときはstateを初期値として保存しておく
+      return dispatch(types.SAVE_TO_STORAGE)
+    }
+  },
+
+  [types.SAVE_TO_STORAGE]({state}) {
+    const clonedData = assign({}, state)
+    delete clonedData.initialized
+    delete clonedData.prevSSID
+
+    return setStorage(types.STORAGE_DATA, clonedData)
+      .then(console.log)
+      .catch(console.error)
+  },
+
+  [types.CHECK_TOKEN]({state}) {
+    return new Promise((s, f) => {})
+  },
+
+  [types.SYNC_STATUS]() {
+    ipcRenderer.send(types.INITIALIZE_STATUS)
+  },
+
+  [types.CLEAR_STATUS]() {
+    ipcRenderer.send(types.SET_CURRENT_STATUS, {status_emoji: '', status_text: ''})
+  },
+
+  [types.INITIALIZE_STATUS]({dispatch}) {
+    dispatch(types.SYNC_STATUS)
+    dispatch(types.AFTER_INITIALIZE)
+  },
+
+  [types.AFTER_INITIALIZE]({commit, dispatch}) {
+    dispatch(types.SAVE_TO_STORAGE)
+      .then(() => {
+        commit(types.AFTER_INITIALIZE)
+      })
   },
 
   [types.SET_CURRENT_SSID]({state, commit, dispatch}, {ssid}) {
@@ -36,5 +97,10 @@ module.exports = {
       status_emoji: isUndefined(status_emoji) ? state.profile.status_emoji : status_emoji,
       status_text: isUndefined(status_text) ? state.profile.status_text : status_text,
     })
+  },
+
+  [types.OPEN_PREFERENCE]({state}, preferenceName) {
+    preferenceName = preferenceName || 'preset'
+    ipcRenderer.send(types.OPEN_PREFERENCE, {preferenceName})
   }
 }

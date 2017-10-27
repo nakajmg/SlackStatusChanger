@@ -4,7 +4,7 @@ const assign = require('object-assign')
 const types = require('../store/types')
 
 module.exports = {
-  template: '<div></div>',
+  template: '<div style="display: none;"></div>',
   data() {
     return {
       watcher: null
@@ -16,6 +16,9 @@ module.exports = {
   }),
 
   created() {
+    /**
+     * 自動実行を監視
+     */
     this.$store.watch((state) => {
       return state.autorun.enable
     }, (enable) => {
@@ -26,27 +29,52 @@ module.exports = {
         this.stopWatcher()
       }
     })
+
+    /**
+     * 起動時にautorunがenableだったら自動実行開始
+     */
     if (this.autorun.enable) {
+      this.setSSID()
       this.startWatcher()
+    }
+  },
+
+  watch: {
+    /**
+     * intervalに変更があればタイマーリセット
+     */
+    'autorun.interval'() {
+      if (this.autorun.enable) {
+        this.startWatcher()
+      }
+      else {
+        this.stopWatcher()
+      }
     }
   },
 
   methods: assign({
     startWatcher() {
+      // 多重起動しないようにタイマーリセット
       this.stopWatcher()
       this.watcher = setInterval(() => {
-        wifiName().then((ssid) => {
-          console.log(ssid)
-          this.setSSID({ssid})
-        }, (err) => {
-          console.log(err)
-        })
-      }, this.autorun.interval)
+        this.setSSID()
+      }, this.autorun.interval * 1000)
     },
     stopWatcher() {
-      this.watcher && clearInterval(this.watcher)
+      if (this.watcher) {
+        clearInterval(this.watcher)
+        this.watcher = null
+      }
     },
+    // 名前変えたい。change statusとか ssidセットするわけじゃないし
+    async setSSID() {
+      const ssid = await wifiName().catch(err => {
+        console.log(err)
+      })
+      this.setCurrentSSID({ssid})
+    }
   }, mapActions({
-    setSSID: types.SET_CURRENT_SSID,
+    setCurrentSSID: types.SET_CURRENT_SSID,
   }))
 }
