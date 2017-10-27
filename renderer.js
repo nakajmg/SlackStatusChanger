@@ -10,7 +10,7 @@ const Promise = require('bluebird')
 new Vue({
   el: '#app',
   template: `
-  <div class="App">
+  <div class="App" :class="{'-Uninitialized': !initialized}">
     <template v-if="initialized">
       <div class="App-Status">
         <CurrentStatus/>
@@ -21,8 +21,11 @@ new Vue({
       <Watcher/>
     </template>
     <template v-else>
-      <div>
-        Please set your api token on preference
+      <div class="NoToken">
+        <Emoji emoji=":key:"/>
+        <span>
+          Please set your API token on <a @click.prevent="openPreference('token')" href="#">Preference</a>
+        </span>
       </div>
     </template>
     <div class="App-Footer">

@@ -7,7 +7,23 @@ html, body {
   width: 100%;
   background-color: #fff;
 }
-
+.NoToken {
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100% - 46px);
+  color: #afafaf;
+  text-shadow: 1px 1px 0 rgba(0,0,0, .1);
+  text-align: center;
+}
+.NoToken a {
+  color: #2d9ee0;
+}
+.NoToken a:link {
+  color: #2d9ee0;
+}
 .App {
   background-color: #fff;
   margin: 0 auto;
@@ -140,7 +156,9 @@ html, body {
     width: auto !important;
     border: none !important;
   }
-
+.App.-Uninitialized .ToolBar {
+  pointer-events: none;
+}
 .ToolBar {
   display: flex;
   justify-content: flex-end;
