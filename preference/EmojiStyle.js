@@ -61,16 +61,16 @@ module.exports = {
   },
 
   watch: {
-    emojiSet(newVal, oldVal) {
+    emojiSet(emojiSet, oldVal) {
       if (!oldVal) return
-      this.update(newVal)
+      this.update(emojiSet)
     }
   },
 
   methods: {
-    update(val) {
-      ipcRenderer.send(types.UPDATE_PREFERENCE, {emojiSet: val})
-      this.$emit('input', val)
+    update(emojiSet) {
+      ipcRenderer.send(types.UPDATE_PREFERENCE, {emojiSet})
+      this.$emit('input', emojiSet)
     },
   },
 

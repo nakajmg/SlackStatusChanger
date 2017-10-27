@@ -33,10 +33,4 @@ module.exports = {
   `,
 
   props: ['emojiSet', 'preset'],
-
-  data() {
-    return {
-
-    }
-  },
 }
