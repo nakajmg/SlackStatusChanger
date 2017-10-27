@@ -31,7 +31,7 @@ function initialize(data) {
           <APIToken v-show="isSelectedMenu('token')" :emojiSet="emojiSet" :apiToken="apiToken"/>
           <Autorun v-show="isSelectedMenu('autorun')" :emojiSet="emojiSet" v-model="autorun"/>        
           <EmojiStyle v-show="isSelectedMenu('emoji')" v-model="emojiSet"/>
-          <Preset v-show="isSelectedMenu('preset')" :preset="preset" :emojiSet="emojiSet"/>
+          <Preset v-show="isSelectedMenu('preset')" v-model="preset" :emojiSet="emojiSet"/>
         </main>
       </div>
       `,
@@ -39,6 +39,13 @@ function initialize(data) {
       const parsed = queryString.parse(location.search)
       return assign({}, data, {
         selectedMenu: parsed.name
+      })
+    },
+
+    created() {
+      // 設定画面が開かれてるときにメニューバーから指定された設定項目を開く
+      ipcRenderer.on(types.CHANGE_PREFERENCE_MENU, (e, {preferenceName}) => {
+        this.selectedMenu = preferenceName
       })
     },
 

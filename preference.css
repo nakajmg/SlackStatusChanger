@@ -143,6 +143,29 @@ input[name="emojiSet"]:checked + .EmojiType {
   cursor: pointer;
 }
 
+.Preset {
+  position: relative;
+}
+.Preset .EmojiPicker {
+  position: absolute;
+  width: 100% !important;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  height: 100%;
+}
+
+.Preset .EmojiPicker .emoji-mart-scroll {
+  height: calc(100% - 150px);
+}
+.Preset .EmojiPicker .emoji-mart-scroll + .emoji-mart-bar {
+  height: 60px;
+}
+.Preset .EmojiPicker .emoji-mart-preview {
+  transform: scale(0.8);
+  transform-origin-y: 100%;
+}
+
 .buttons {
   -webkit-box-align: center;
   -ms-flex-align: center;

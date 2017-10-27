@@ -28,8 +28,11 @@ module.exports = {
             <Emoji emoji=":link:" :size="12" :set="emojiSet"/>
             <span>https://api.slack.com/apps</span>
           </a>
-          
       </div>
+      <div>
+          You have to add permission scope: users.profile:read & users.profile:write
+      </div>
+      
     </div>
   </section>
   `,

@@ -57,13 +57,18 @@ menubar.on('ready', () => {
       })
   })
 
-
+  let preference = null
   /**
    * 設定画面開く
    */
   ipcMain.on(types.OPEN_PREFERENCE, (e, {preferenceName}) => {
-    console.log(preferenceName)
-    const preference = new BrowserWindow({
+    // 設定画面が開かれてたら既存の設定画面にフォーカス
+    if (preference) {
+      // 指定された設定項目を開く
+      preference.webContents.send(types.CHANGE_PREFERENCE_MENU, {preferenceName})
+      return preference.show()
+    }
+    preference = new BrowserWindow({
       width: 480,
       height: 400,
       titleBarStyle: 'hidden',
@@ -78,6 +83,7 @@ menubar.on('ready', () => {
 
     preference.on('close', () => {
       menuWindow.send(types.CLOSE_PREFERENCE)
+      preference = null
     })
   })
 

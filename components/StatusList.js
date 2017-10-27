@@ -5,7 +5,7 @@ const types = require('../store/types')
 module.exports = {
   template: `
     <div class="StatusList">
-      <div class="StatusList-Label">Preset (<span @click="openPreference" class="edit">edit</span>)</div>
+      <div class="StatusList-Label">Preset (<span @click="openPreference()" class="edit">edit</span>)</div>
       <div @click="setStatus(item)" v-for="item in items" class="StatusList-Item">
         <Emoji :emoji="item.status_emoji" :set="emojiSet" :title="item.status_emoji"></Emoji>
         <span class="text">{{item.status_text}}</span>

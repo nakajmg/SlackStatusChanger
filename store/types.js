@@ -16,4 +16,5 @@ module.exports = {
   UPDATE_PREFERENCE: 'updatePreference',
   SYNC_STATUS: 'syncStatus',
   CLEAR_STATUS: 'clearStatus',
+  CHANGE_PREFERENCE_MENU: 'changePreferenceMenu',
 }
