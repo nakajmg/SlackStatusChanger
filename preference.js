@@ -28,31 +28,8 @@ new Vue({
         
         <EmojiStyle v-model="emojiSet"/>
         
-        <Preset :preset="preset"/>
-        <section class="Contents">
-          <div class="field">
-            <label class="label Contents__Label">
-              <Emoji emoji=":scroll:" :set="emojiSet" :size="20"/>
-              <span>Preset</span>
-            </label>
-            <div class="PresetItem" v-for="item in preset">
-              <div class="control has-icons-left has-icons-right">
-                <input class="input is-medium PresetItem__Text" :value="item.status_text">
-                <span class="icon is-left PresetItem__Emoji">
-                  <Emoji :emoji="item.status_emoji" :set="emojiSet"/>
-                </span>
-                <span class="icon is-right PresetItem__Remove">
-                  <Emoji emoji=":x:" :set="emojiSet" :size="16"/>
-                </span>
-              </div>
-            </div>
-            <div class="control is-clearfix" style="text-align: center;">
-              <span class="icon is-large">
-                <Emoji class="PresetItem__Add" emoji=":heavy_plus_sign:" :set="emojiSet"/>
-              </span>
-            </div>
-          </div>
-        </section>
+        <Preset :preset="preset" :emojiSet="emojiSet"/>
+        
       </div>
       
       <div v-else>Initializing...</div>
@@ -83,26 +60,12 @@ new Vue({
   },
 
   methods: {
-    saveToken() {
-      // Tokenの検証してから保存する
-      // 検証が成功したら通知出す
-      const apiToken = this.$refs.tokenInput.value
-      this.update({apiToken})
-    },
-
     update(payload) {
       ipcRenderer.send(types.UPDATE_PREFERENCE, payload)
     },
 
-    isSelectedMenu(type) {
-      return this.selectedMenu === type
-    },
-    selectMenu(type) {
-      this.selectedMenu = type
-    }
   },
 
   components: assign({
-    Emoji
   }, components)
 })
