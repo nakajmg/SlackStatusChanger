@@ -9,15 +9,18 @@ module.exports = {
         <Emoji emoji=":key:" :set="emojiSet" :size="20"/>
         <span>API token</span>
       </label>
-      <div class="control">
-        <input :value="apiToken" ref="tokenInput" class="input" type="text" placeholder="Input your API token">
+      
+      
+      <div class="field is-clearfix is-flex">
+        <div class="control" style="flex-grow: 1;margin-right: 10px;">
+          <input :value="apiToken" ref="tokenInput" class="input" type="text" placeholder="Input your API token">
+        </div>
+        
+        <button @click="saveToken" class="button is-link ">
+          <Emoji emoji=":heavy_check_mark:" :set="emojiSet" :size="16"/>
+          <span>&nbsp;&nbsp;Save</span>
+        </button>
       </div>
-    </div>
-    <div class="field is-clearfix">
-      <button @click="saveToken" class="button is-info is-pulled-right">
-        <Emoji emoji=":heavy_check_mark:" :set="emojiSet" :size="16"/>
-        <span>&nbsp;&nbsp;Save</span>
-      </button>
     </div>
   </section>
   `,

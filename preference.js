@@ -26,7 +26,8 @@ function initialize(data) {
           <MenuList :emojiSet="emojiSet" :selectedMenu="selectedMenu" /> 
         </header>
         
-        <APIToken :emojiSet="emojiSet" :apiToken="apiToken"/>        
+        <APIToken :emojiSet="emojiSet" :apiToken="apiToken"/>
+        <Autorun :emojiSet="emojiSet" v-model="autorun"/>        
         <EmojiStyle v-model="emojiSet"/>
         <Preset :preset="preset" :emojiSet="emojiSet"/>
       </div>

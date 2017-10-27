@@ -96,7 +96,7 @@ html, body {
 }
 input[name="emojiSet"]:checked + .EmojiType {
   color: #fff;
-  background-color: #2d9ee0;
+  background-color: #3273dc;
 }
 
 .PresetItem__Remove {
@@ -113,4 +113,44 @@ input[name="emojiSet"]:checked + .EmojiType {
 }
 .PresetItem__Add {
   cursor: pointer;
+}
+
+.buttons {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+.buttons:last-child {
+  margin-bottom: -0.5rem;
+}
+
+.buttons .button {
+  margin-bottom: 0.5rem;
+}
+
+.buttons .button:not(:last-child) {
+  margin-right: 0.5rem;
+}
+
+
+.buttons.has-addons .button:not(:last-child) {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+  margin-right: -1px;
+}
+
+.buttons.has-addons .button:not(:first-child) {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+.buttons.has-addons .button:last-child {
+  margin-right: 0;
 }
