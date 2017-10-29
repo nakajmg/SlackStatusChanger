@@ -16,7 +16,7 @@ module.exports = {
   }),
 
   methods: mapActions({
-    resetData: types.RESET_DATA,
+    resetData: types.CLEAR_STORAGE,
     openPreference: types.OPEN_PREFERENCE,
     syncStatus: types.SYNC_STATUS,
   }),

@@ -28,7 +28,12 @@ function initialize(data) {
           <MenuList :emojiSet="emojiSet" v-model="selectedMenu"/> 
         </header>
         <main class="Main">
-          <APIToken v-show="isSelectedMenu('token')" :emojiSet="emojiSet" :apiToken="apiToken"/>
+          <ErrorReport v-if="error" :error="error" :emojiSet="emojiSet"/>
+          <APIToken v-show="isSelectedMenu('token')"
+            :emojiSet="emojiSet"
+            v-model="apiToken"
+            :tokenVerified="tokenVerified"
+          />
           <Autorun v-show="isSelectedMenu('autorun')" :emojiSet="emojiSet" v-model="autorun"/>        
           <EmojiStyle v-show="isSelectedMenu('emoji')" v-model="emojiSet"/>
           <Preset v-show="isSelectedMenu('preset')" v-model="preset" :emojiSet="emojiSet"/>
@@ -37,16 +42,34 @@ function initialize(data) {
       `,
     data() {
       const parsed = queryString.parse(location.search)
+
       return assign({}, data, {
-        selectedMenu: parsed.name
+        selectedMenu: parsed.name,
+        error: null,
       })
     },
 
     created() {
       // 設定画面が開かれてるときにメニューバーから指定された設定項目を開く
-      ipcRenderer.on(types.CHANGE_PREFERENCE_MENU, (e, {preferenceName}) => {
+      ipcRenderer.on(types.CHANGE_PREFERENCE_MENU, (e, {preferenceName, error}) => {
         this.selectedMenu = preferenceName
+        this.error = error
+        console.log(this.error)
       })
+
+      ipcRenderer.on(types.TOKEN_VERIFIED, (e, {apiToken}) => {
+        console.log(apiToken)
+        this.tokenVerified = true
+        this.apiToken = apiToken
+        this.error = null
+      })
+    },
+
+    watch: {
+      apiToken(apiToken) {
+        this.tokenVerified = false
+        ipcRenderer.send(types.UPDATE_TOKEN, {apiToken})
+      }
     },
 
     methods: {

@@ -1,6 +1,7 @@
 module.exports = {
   initialized: false,
   apiToken: null,
+  tokenVerified: false,
 
   // 今のstatusを保持
   profile: {

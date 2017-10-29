@@ -205,3 +205,22 @@ input[name="emojiSet"]:checked + .EmojiType {
 .buttons.has-addons .button:last-child {
   margin-right: 0;
 }
+
+.PermissionCaution {
+  font-size: 12px;
+  padding: 5px;
+  border: 1px solid #95d5fb;
+  color: #353535;
+  border-radius: 3px;
+  text-align: right;
+  background: #ddf3ff;
+}
+
+.ErrorReport {
+  margin: 15px 15px 0 !important;
+}
+.ErrorReport .message-body{
+  padding: 5px !important;
+  display: flex;
+  align-items: center;
+}

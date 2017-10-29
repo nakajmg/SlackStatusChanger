@@ -43,7 +43,7 @@ module.exports = {
 
   methods: {
     selectMenu(type) {
-      if (type === this.value) return
+      if (this.isSelectedMenu(type)) return
       this.$emit('input', type)
     },
     isSelectedMenu(type) {

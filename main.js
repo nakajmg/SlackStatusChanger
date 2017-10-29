@@ -1,7 +1,13 @@
 //const electron = require('electron')
 const {BrowserWindow} = require('electron')
 const {ipcMain} = require('electron')
+const axios = require('axios')
 const types = require('./store/types')
+const APIError = require('./APIError')
+
+function apiErrorReport({name, message}) {
+  console.error(name, message)
+}
 
 const menubar = require('menubar')({
   preloadWindow: true,
@@ -9,36 +15,85 @@ const menubar = require('menubar')({
   frame: false,
   width: 280,
 })
-const token = require('./token')
-const request = require('axios')
+
+let preference = null
 
 menubar.on('ready', () => {
   console.log('ready')
   const menuWindow = menubar.window.webContents
-  ipcMain.on(types.INITIALIZE_STATUS, (e) => {
-    request({
-      url: 'https://slack.com/api/users.profile.get',
-      methods: 'POST',
+
+  /**
+   * for debug
+   */
+  //menubar.showWindow()
+  //menuWindow.openDevTools()
+
+
+  function setCurrentStatus (profile){
+    menuWindow.send(types.SET_CURRENT_STATUS, profile)
+  }
+
+  /**
+   * @param {string} apiToken
+   */
+  function syncStatus ({apiToken}){
+    console.log(apiToken)
+    const url = 'https://slack.com/api/users.profile.get'
+    return axios({
+      url,
+      method: 'POST',
       params: {
-        token
+        token: apiToken,
       }
     })
       .then(res => res.data)
       .then(body => {
-        menuWindow.send(types.SET_CURRENT_STATUS, body.profile)
-        console.log('initialize success')
+        if (body.error) throw new APIError(body)
+        console.log('sync success')
+        setCurrentStatus(body.profile)
       })
-      .catch(err => {
-        console.log(err.message)
+  }
+
+  ipcMain.on(types.SYNC_STATUS, (e, {apiToken}) => syncStatus({apiToken}))
+
+  // tokenをセットしてsyncStatusを呼ぶ役
+  function verifyToken({apiToken}) {
+    // tokenのverifyを行う
+    // verifyが成功したらINITIALIZE_SUCCEESSかなにか飛ばしてINITIALIZEを完了する
+    // verify失敗したらpreferenceのtoken開いてエラー通知 エラーの詳細はURLパラメータで送る
+    return syncStatus({apiToken})
+      .then(() => {
+        console.log('Complete: Initialize')
+        verifySuccess({apiToken})
       })
+      .catch(error => {
+        openPreference({
+          preferenceName: 'token',
+          error: `${error.name},${error.message}`,
+        })
+        console.log(error.name, error.message)
+      })
+  }
+
+  function verifySuccess({apiToken}) {
+    menuWindow.send(types.TOKEN_VERIFIED, {apiToken})
+    if (preference) {
+      preference.webContents.send(types.TOKEN_VERIFIED, {apiToken})
+    }
+  }
+
+  ipcMain.on(types.INITIALIZE_STATUS, (e, {apiToken}) => {
+    verifyToken({apiToken})
   })
 
-  ipcMain.on(types.SET_CURRENT_STATUS, (e, {status_emoji, status_text}) => {
+
+  ipcMain.on(types.SET_CURRENT_STATUS, (e, {apiToken, status_emoji, status_text}) => {
+    const url = 'https://slack.com/api/users.profile.set'
     const options = {
-      url: 'https://slack.com/api/users.profile.set',
+      url,
       method: 'POST',
       params: {
-        token,
+        token: apiToken,
         profile: {
           status_emoji,
           status_text,
@@ -46,28 +101,27 @@ menubar.on('ready', () => {
       }
     }
 
-    request(options)
+    return axios(options)
       .then(res => res.data)
       .then(body => {
         console.log(body.ok, body.profile.status_emoji, body.profile.status_text)
-        menuWindow.send(types.SET_CURRENT_STATUS, body.profile)
+        setCurrentStatus(body.profile)
       })
-      .catch(err => {
-        console.log(err)
-      })
+      .catch(apiErrorReport)
   })
 
-  let preference = null
+
   /**
    * 設定画面開く
    */
-  ipcMain.on(types.OPEN_PREFERENCE, (e, {preferenceName}) => {
+  function openPreference({preferenceName, error}) {
     // 設定画面が開かれてたら既存の設定画面にフォーカス
     if (preference) {
       // 指定された設定項目を開く
-      preference.webContents.send(types.CHANGE_PREFERENCE_MENU, {preferenceName})
+      preference.webContents.send(types.CHANGE_PREFERENCE_MENU, {preferenceName, error})
       return preference.show()
     }
+
     preference = new BrowserWindow({
       width: 480,
       height: 400,
@@ -75,8 +129,10 @@ menubar.on('ready', () => {
       fullscreenable: false,
       maximizable: false,
       show: false,
-    });
-    preference.loadURL(`file://${__dirname}/preference.html?name=${preferenceName}`)
+    })
+
+    const errorParam = error ? `&error=${error}` : ''
+    preference.loadURL(`file://${__dirname}/preference.html?name=${preferenceName}${errorParam}`)
     preference.on('ready-to-show', () => {
       preference.show()
     })
@@ -85,6 +141,15 @@ menubar.on('ready', () => {
       menuWindow.send(types.CLOSE_PREFERENCE)
       preference = null
     })
+
+    ipcMain.on(types.UPDATE_TOKEN, (e, {apiToken}) => {
+      verifyToken({apiToken})
+    })
+  }
+
+
+  ipcMain.on(types.OPEN_PREFERENCE, (e, params = {}) => {
+    openPreference(params)
   })
 
   // preferenceでデータを更新したらmenuWindowで更新処理
@@ -92,62 +157,5 @@ menubar.on('ready', () => {
     menuWindow.send(types.UPDATE_PREFERENCE, payload)
   })
 
-
 //  preference.show()
 })
-
-
-//const app = electron.app
-//const path = require('path')
-//const url = require('url')
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-//let mainWindow
-//
-//function createWindow () {
-//  // Create the browser window.
-//  mainWindow = new BrowserWindow({width: 800, height: 600})
-//
-//  // and load the index.html of the app.
-//  mainWindow.loadURL(url.format({
-//    pathname: path.join(__dirname, 'index.html'),
-//    protocol: 'file:',
-//    slashes: true
-//  }))
-//
-//  // Open the DevTools.
-//  // mainWindow.webContents.openDevTools()
-//
-//  // Emitted when the window is closed.
-//  mainWindow.on('closed', function () {
-//    // Dereference the window object, usually you would store windows
-//    // in an array if your app supports multi windows, this is the time
-//    // when you should delete the corresponding element.
-//    mainWindow = null
-//  })
-//}
-//
-//// This method will be called when Electron has finished
-//// initialization and is ready to create browser windows.
-//// Some APIs can only be used after this event occurs.
-//app.on('ready', createWindow)
-//
-//// Quit when all windows are closed.
-//app.on('window-all-closed', function () {
-//  // On OS X it is common for applications and their menu bar
-//  // to stay active until the user quits explicitly with Cmd + Q
-//  if (process.platform !== 'darwin') {
-//    app.quit()
-//  }
-//})
-//
-//app.on('activate', function () {
-//  // On OS X it's common to re-create a window in the app when the
-//  // dock icon is clicked and there are no other windows open.
-//  if (mainWindow === null) {
-//    createWindow()
-//  }
-//})
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.

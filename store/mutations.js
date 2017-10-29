@@ -17,6 +17,11 @@ module.exports = {
     state.prevSSID = ssid
   },
 
+  [types.TOKEN_VERIFIED](state, {apiToken}) {
+    state.apiToken = apiToken
+    state.tokenVerified = true
+  },
+
   [types.AFTER_INITIALIZE](state) {
     state.initialized = true
   },
