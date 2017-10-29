@@ -19,7 +19,6 @@ const menubar = require('menubar')({
 let preference = null
 
 menubar.on('ready', () => {
-  console.log('ready')
   const menuWindow = menubar.window.webContents
 
   /**
@@ -37,7 +36,6 @@ menubar.on('ready', () => {
    * @param {string} apiToken
    */
   function syncStatus ({apiToken}){
-    console.log(apiToken)
     const url = 'https://slack.com/api/users.profile.get'
     return axios({
       url,
