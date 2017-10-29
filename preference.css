@@ -112,6 +112,9 @@ html, body {
   .Caution .emoji-mart-emoji {
     margin-right: 3px;
   }
+  .PermissionCaution {
+    margin-top: 10px;
+  }
 
 .EmojiType {
   display: inline-flex;

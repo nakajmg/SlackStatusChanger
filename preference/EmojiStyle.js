@@ -22,7 +22,7 @@ module.exports = {
           </div>
         </label>
       </div>
-      <div class="EmojiStyle__Caution">
+      <div class="PermissionCaution">
         This preference is only apply to the app. <br>
         See Slack Preferences > Messages & Media > Emoji Style.
       </div>
