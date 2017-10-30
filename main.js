@@ -15,6 +15,7 @@ const menubar = require('menubar')({
   transparent: true,
   frame: false,
   width: 280,
+  icon: 'icon.png',
 })
 
 let preference = null
