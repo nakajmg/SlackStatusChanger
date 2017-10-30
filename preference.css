@@ -131,6 +131,7 @@ input[name="emojiSet"]:checked + .EmojiType {
 }
 
 .PresetItem__Remove {
+  display: none;
   pointer-events: initial !important;
   opacity: 0.5;
   cursor: pointer;
@@ -189,6 +190,9 @@ input[name="emojiSet"]:checked + .EmojiType {
 .buttons .button {
   margin-bottom: 0.5rem;
 }
+.buttons .button.is-light {
+  opacity: 0.7;
+}
 
 .buttons .button:not(:last-child) {
   margin-right: 0.5rem;
@@ -208,6 +212,8 @@ input[name="emojiSet"]:checked + .EmojiType {
 .buttons.has-addons .button:last-child {
   margin-right: 0;
 }
+
+
 
 .PermissionCaution {
   font-size: 12px;

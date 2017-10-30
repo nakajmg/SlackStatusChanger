@@ -37,6 +37,7 @@ function initialize(data) {
           <Autorun v-show="isSelectedMenu('autorun')" :emojiSet="emojiSet" v-model="autorun"/>        
           <EmojiStyle v-show="isSelectedMenu('emoji')" v-model="emojiSet"/>
           <Preset v-show="isSelectedMenu('preset')" v-model="preset" :emojiSet="emojiSet"/>
+          <ResetStorage v-show="isSelectedMenu('reset')" :emojiSet="emojiSet" />
         </main>
       </div>
       `,

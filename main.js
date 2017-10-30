@@ -155,5 +155,11 @@ menubar.on('ready', () => {
     menuWindow.send(types.UPDATE_PREFERENCE, payload)
   })
 
+  ipcMain.on(types.RESTART_APP, (e) => {
+    if (preference) {
+      preference.close()
+    }
+    menuWindow.reload()
+  })
 //  preference.show()
 })
