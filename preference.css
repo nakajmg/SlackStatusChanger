@@ -288,23 +288,19 @@ input[name="emojiSet"]:checked + .EmojiType {
   .AutorunList__ItemEnable {
     padding: 5px;
   }
-  
-  .AutorunList__Item.-Header {
-    background-color: #3b99fc;
-    -webkit-user-select: none;
-    pointer-events: none;
-    padding: 0 0 0 10px;
+
+  .AutorunList__ItemRemove {
+    cursor: pointer;
+    margin-left: 5px;
+    opacity: 0.5;
   }
-  
-  .AutorunList__Item.-Header .input {
-    color: #fff;
-    font-weight: 600;
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
-    font-size: 12px;
-  }
-  .AutorunList__Item.-Header .checkbox {
-    visibility: hidden;
+  .AutorunList__ItemRemove:hover {
+    opacity: 1;
   }
 
+  .AutorunList__Add {
+    margin: 0;
+  }
+  .AutorunList__Add .icon {
+    cursor: pointer;
+  }

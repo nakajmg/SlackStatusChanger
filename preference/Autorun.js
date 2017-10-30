@@ -47,11 +47,11 @@ module.exports = {
       
     </div>
     
-    <div class="AutorunList" :class="{'-Enable': value.enable}">
+    <div v-if="value.settings.length" class="AutorunList" :class="{'-Enable': value.enable}">
       
       <div v-for="(setting, index) in value.settings" class="AutorunList__Item">
         <label class="checkbox AutorunList__ItemEnable">
-          <input type="checkbox" :value="setting.enable" :checked="setting.enable" @change="updateSetting(index, 'enable', $event)">
+          <input type="checkbox" :value="setting.enable" :checked="setting.enable" @change="updateSetting(index, 'enable', $event)" title="enable/disable">
         </label>
         
         <label class="control AutorunList__ItemSSID">
@@ -65,9 +65,27 @@ module.exports = {
           <span class="icon is-left">
             <Emoji :emoji="setting.status_emoji" :set="emojiSet"/>
           </span>
-          <input class="input" :value="setting.status_text" @input="updateSetting(index, 'status_text', $event)">
+          <input class="input"
+            :value="setting.status_text"
+            @input="updateSetting(index, 'status_text', $event)"
+            placeholder="Input your status"
+          >
         </label>
+        
+        <span @click="removeSetting(index)" class="icon AutorunList__ItemRemove">
+          <Emoji :size="14" emoji=":x:" :set="emojiSet"/>
+        </span>
       </div>
+      
+    </div>
+    
+    <div class="control is-clearfix AutorunList__Add" style="text-align: center;">
+      <span @click="addSetting" class="icon is-large">
+        <Emoji :size="18" emoji=":heavy_plus_sign:" :set="emojiSet"/>
+      </span>
+    </div>
+    <div v-if="!value.settings.length" style="text-align: center;">
+      Click <Emoji :size="12" emoji=":heavy_plus_sign:" :set="emojiSet"/> button to add setting
     </div>
     
   </section>
@@ -110,7 +128,24 @@ module.exports = {
       }
       settings[index][type] = value
       this.update({settings})
+    },
+    addSetting() {
+      const settings = cloneDeep(this.value.settings)
+      settings.push({
+        enable: false,
+        ssid: '',
+        status_emoji: ':smiley:',
+        status_text: '',
+      })
+      this.update({settings})
+    },
+
+    removeSetting(index) {
+      const settings = cloneDeep(this.value.settings)
+      settings.splice(index, 1)
+      this.update({settings})
     }
   },
+
 
 }
