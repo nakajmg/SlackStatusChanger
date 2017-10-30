@@ -19,7 +19,7 @@ const menubar = require('menubar')({
 let preference = null
 
 menubar.on('ready', () => {
-  const menuWindow = menubar.window.webContents
+  let menuWindow = menubar.window.webContents
 
   /**
    * for debug
@@ -156,10 +156,13 @@ menubar.on('ready', () => {
   })
 
   ipcMain.on(types.RESTART_APP, (e) => {
-    if (preference) {
-      preference.close()
-    }
+    if (preference) preference.close()
     menuWindow.reload()
+  })
+
+  ipcMain.on(types.EXIT_APP, (e) => {
+    if (preference) preference.close()
+    menubar.window.close()
   })
 //  preference.show()
 })

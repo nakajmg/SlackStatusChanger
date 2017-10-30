@@ -29,9 +29,7 @@ new Vue({
       </div>
     </template>
     <div class="App-Footer">
-      <div class="ToolBar">
-        <ToolBar/>
-      </div>
+      <ToolBar/>
     </div>
   </div>
   `,

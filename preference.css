@@ -233,3 +233,10 @@ input[name="emojiSet"]:checked + .EmojiType {
   display: flex;
   align-items: center;
 }
+
+.TokenVerified {
+  font-size: 12px;
+  font-weight: 100;
+  color: #23d160;
+  margin-left: 3px;
+}

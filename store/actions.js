@@ -116,4 +116,10 @@ module.exports = {
     commit(types.SET_CURRENT_SSID, {ssid})
   },
 
+  [types.EXIT_APP]() {
+    ipcRenderer.send(types.EXIT_APP)
+  },
+  [types.RESTART_APP]() {
+    ipcRenderer.send(types.RESTART_APP)
+  },
 }

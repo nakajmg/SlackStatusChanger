@@ -19,4 +19,5 @@ module.exports = {
   CLEAR_STATUS: 'clearStatus',
   CHANGE_PREFERENCE_MENU: 'changePreferenceMenu',
   RESTART_APP: 'restartApp',
+  EXIT_APP: 'exitApp',
 }

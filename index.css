@@ -156,9 +156,7 @@ html, body {
     width: auto !important;
     border: none !important;
   }
-.App.-Uninitialized .ToolBar {
-  pointer-events: none;
-}
+  
 .ToolBar {
   display: flex;
   justify-content: flex-end;

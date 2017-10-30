@@ -12,7 +12,7 @@ module.exports = {
       </label>
       <div class="field is-clearfix is-flex">
         <div class="control" style="flex-grow: 1;margin-right: 10px;">
-          <input :value="value" ref="tokenInput" class="input " type="text" placeholder="Input your API token">
+          <input :class="{'is-danger': !tokenVerified, 'is-success': tokenVerified}" :value="value" ref="tokenInput" class="input " type="text" placeholder="Input your API token">
         </div>
         
         <button @click="verify" class="button is-link ">
@@ -24,6 +24,8 @@ module.exports = {
           <span>Verify</span>
         </button>
       </div>
+      <span v-if="tokenVerified" class="TokenVerified">Token verified</span>
+      
       <div class="PermissionCaution">
         This app required permission scope: <br> <b>users.profile:read</b> & <b>users.profile:write</b>
       </div>
