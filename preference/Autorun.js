@@ -2,6 +2,7 @@ const {ipcRenderer} = require('electron')
 const types = require('../store/types')
 const {cloneDeep, toNumber} = require('lodash')
 const assign = require('object-assign')
+const {Picker} = require('emoji-mart-vue')
 
 module.exports = {
   template: `
@@ -47,8 +48,9 @@ module.exports = {
       
     </div>
     
+    <div class="field">This feature provide automatically change status <br> which based on connected Wi-Fi(SSID).</div>
+    
     <div v-if="value.settings.length" class="AutorunList" :class="{'-Enable': value.enable}">
-      
       <div v-for="(setting, index) in value.settings" class="AutorunList__Item">
         <label class="checkbox AutorunList__ItemEnable">
           <input type="checkbox" :value="setting.enable" :checked="setting.enable" @change="updateSetting(index, 'enable', $event)" title="enable/disable">
@@ -56,14 +58,14 @@ module.exports = {
         
         <label class="control AutorunList__ItemSSID">
           <input class="input"
-            placeholder="Input SSID e.g) hogespot,fugaspot"
+            placeholder="hogespot,fugaspot"
             :value="setting.ssid" @input="updateSetting(index, 'ssid', $event)"
           >
         </label>
         
         <label class="control has-icons-left AutorunList__ItemStatus">
-          <span class="icon is-left">
-            <Emoji :emoji="setting.status_emoji" :set="emojiSet"/>
+          <span @click="showPicker(index)" class="icon is-left AutorunList__ItemEmoji">
+            <Emoji :size="20" :emoji="setting.status_emoji" :set="emojiSet"/>
           </span>
           <input class="input"
             :value="setting.status_text"
@@ -88,10 +90,30 @@ module.exports = {
       Click <Emoji :size="12" emoji=":heavy_plus_sign:" :set="emojiSet"/> button to add setting
     </div>
     
+    <Picker v-show="selectedIndex !== null" class="EmojiPicker"
+      :set="emojiSet"
+      :sheetSize="32"
+      :emoji="selectedEmoji"
+      title="Pick a Emoji"
+      @click="onClickEmoji"
+    />
   </section>
   `,
 
   props: ['emojiSet', 'value'],
+
+  data() {
+    return {
+      selectedIndex: null
+    }
+  },
+
+  computed: {
+    selectedEmoji() {
+      if (this.selectedIndex === null) return ':smiley:'
+      return this.value.settings[this.selectedIndex].status_emoji
+    }
+  },
 
   methods: {
     update(payload) {
@@ -144,8 +166,20 @@ module.exports = {
       const settings = cloneDeep(this.value.settings)
       settings.splice(index, 1)
       this.update({settings})
-    }
+    },
+
+    showPicker(index) {
+      this.selectedIndex = index
+    },
+    onClickEmoji(emoji) {
+      const settings = cloneDeep(this.value.settings)
+      settings[this.selectedIndex].status_emoji = emoji.colons
+      this.update({settings})
+      this.selectedIndex = null
+    },
   },
 
-
+  components: {
+    Picker,
+  },
 }

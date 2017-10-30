@@ -17,12 +17,12 @@ module.exports = {
 
   preset: [
     {
-      status_emoji: ':office:',
-      status_text: 'In the office',
-    },
-    {
       status_emoji: ':house_with_garden:',
       status_text: 'In the house',
+    },
+    {
+      status_emoji: ':office:',
+      status_text: 'In the office',
     },
     {
       status_emoji: ':face_with_thermometer:',
@@ -44,16 +44,16 @@ module.exports = {
     interval: 300,
     settings: [
       {
-        enable: true,
-        ssid: 'jmghome',
+        enable: false,
+        ssid: '',
         status_emoji: ':house_with_garden:',
-        status_text: '家にいる',
+        status_text: 'In the house',
       },
       {
-        enable: true,
-        ssid: 'pxgrid-guest',
+        enable: false,
+        ssid: '',
         status_emoji: ':office:',
-        status_text: 'オフィスにいる',
+        status_text: 'In the office',
       }
     ]
   },

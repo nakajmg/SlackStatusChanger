@@ -139,6 +139,8 @@ input[name="emojiSet"]:checked + .EmojiType {
   .PresetItem__Remove:hover {
     opacity: 1.0;
   }
+
+.AutorunList__ItemEmoji,
 .PresetItem__Emoji {
   pointer-events: initial !important;
   cursor: pointer;
@@ -147,10 +149,13 @@ input[name="emojiSet"]:checked + .EmojiType {
   cursor: pointer;
 }
 
-.Preset {
+.Preset,
+.Autorun {
   position: relative;
+  min-height: 280px;
 }
-.Preset .EmojiPicker {
+.Preset .EmojiPicker ,
+.Autorun .EmojiPicker {
   position: absolute;
   width: 100% !important;
   top: 0;
@@ -159,13 +164,17 @@ input[name="emojiSet"]:checked + .EmojiType {
   height: 100%;
 }
 
-.Preset .EmojiPicker .emoji-mart-scroll {
+.Preset .EmojiPicker .emoji-mart-scroll,
+.Autorun .EmojiPicker .emoji-mart-scroll {
   height: calc(100% - 150px);
 }
-.Preset .EmojiPicker .emoji-mart-scroll + .emoji-mart-bar {
+.Preset .EmojiPicker .emoji-mart-scroll + .emoji-mart-bar,
+.Autorun .EmojiPicker .emoji-mart-scroll + .emoji-mart-bar {
   height: 60px;
 }
-.Preset .EmojiPicker .emoji-mart-preview {
+
+.Preset .EmojiPicker .emoji-mart-preview,
+.Autorun .EmojiPicker .emoji-mart-preview {
   transform: scale(0.8);
   transform-origin-y: 100%;
 }
