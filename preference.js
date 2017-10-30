@@ -59,7 +59,6 @@ function initialize(data) {
       })
 
       ipcRenderer.on(types.TOKEN_VERIFIED, (e, {apiToken}) => {
-        console.log(apiToken)
         this.tokenVerified = true
         this.apiToken = apiToken
         this.error = null

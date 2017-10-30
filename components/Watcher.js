@@ -55,11 +55,13 @@ module.exports = {
 
   methods: assign({
     startWatcher() {
+      // intervalが60/s以下にならないように
+      const interval = this.autorun.interval > 60 ? this.autorun.interval * 1000 : 60000
       // 多重起動しないようにタイマーリセット
       this.stopWatcher()
       this.watcher = setInterval(() => {
         this.setSSID()
-      }, this.autorun.interval * 1000)
+      }, interval)
     },
     stopWatcher() {
       if (this.watcher) {

@@ -25,7 +25,7 @@ module.exports = {
         },
         {
           label: 'Autorun',
-          emoji: ':traffic_light:',
+          emoji: ':signal_strength:',
           type: 'autorun',
         },
         {

@@ -240,3 +240,71 @@ input[name="emojiSet"]:checked + .EmojiType {
   color: #23d160;
   margin-left: 3px;
 }
+
+.AutorunList {
+  /*padding: 10px;*/
+  /*background-color: #555;*/
+  /*padding: 0 40px;*/
+  /*background-color: #3273dc;*/
+  border: 1px solid rgba(255, 56, 96, 0.5);
+  opacity: 0.8;
+  border-radius: 2px;
+}
+  .AutorunList.-Enable {
+    border: 1px solid rgba(50, 115, 220, 0.5);
+    opacity: 1;
+  }
+
+  .AutorunList__Item {
+    display: flex;
+    align-items: center;
+    /*#3393fc*/
+      /*#3b99fc*/
+    padding: 5px 5px 5px 5px;
+    border-radius: 1px;
+    border-bottom: 1px solid #d4d4d4;
+  }
+  .AutorunList__Item .input {
+    border-radius: 0;
+    border: none;
+  }
+  
+  .AutorunList__ItemSSID {
+    flex-grow: 1;
+    max-width: 50%;
+    margin: 0 10px 0 5px;
+  }
+  .AutorunList__ItemStatus {
+    flex-grow: 1;
+  }
+  .AutorunList__ItemSSID .input{
+    /*color: #333;*/
+    /*background-color: transparent;*/
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    /*margin: 0 3px;*/
+  }
+  .AutorunList__ItemEnable {
+    padding: 5px;
+  }
+  
+  .AutorunList__Item.-Header {
+    background-color: #3b99fc;
+    -webkit-user-select: none;
+    pointer-events: none;
+    padding: 0 0 0 10px;
+  }
+  
+  .AutorunList__Item.-Header .input {
+    color: #fff;
+    font-weight: 600;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    font-size: 12px;
+  }
+  .AutorunList__Item.-Header .checkbox {
+    visibility: hidden;
+  }
+
