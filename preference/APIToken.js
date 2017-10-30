@@ -46,7 +46,6 @@ module.exports = {
     verify() {
       const apiToken = this.$refs.tokenInput.value
       this.$emit('input', apiToken)
-      ipcRenderer.send(types.UPDATE_TOKEN, {apiToken})
     },
 
     openLink(href) {

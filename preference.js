@@ -68,6 +68,7 @@ function initialize(data) {
     watch: {
       apiToken(apiToken) {
         this.tokenVerified = false
+        if (!apiToken) return
         ipcRenderer.send(types.UPDATE_TOKEN, {apiToken})
       }
     },

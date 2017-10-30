@@ -4,6 +4,7 @@ const {ipcMain} = require('electron')
 const axios = require('axios')
 const types = require('./store/types')
 const APIError = require('./APIError')
+const {debounce} = require('lodash')
 
 function apiErrorReport({name, message}) {
   console.error(name, message)
@@ -51,8 +52,9 @@ menubar.on('ready', () => {
         setCurrentStatus(body.profile)
       })
   }
+  const dsyncStatus = debounce(syncStatus, 100)
 
-  ipcMain.on(types.SYNC_STATUS, (e, {apiToken}) => syncStatus({apiToken}))
+  ipcMain.on(types.SYNC_STATUS, (e, {apiToken}) => dsyncStatus({apiToken}))
 
   // tokenをセットしてsyncStatusを呼ぶ役
   function verifyToken({apiToken}) {
@@ -61,7 +63,6 @@ menubar.on('ready', () => {
     // verify失敗したらpreferenceのtoken開いてエラー通知 エラーの詳細はURLパラメータで送る
     return syncStatus({apiToken})
       .then(() => {
-        console.log('Complete: Initialize')
         verifySuccess({apiToken})
       })
       .catch(error => {
@@ -80,8 +81,9 @@ menubar.on('ready', () => {
     }
   }
 
+  const dverifyToken = debounce(verifyToken, 100)
   ipcMain.on(types.INITIALIZE_STATUS, (e, {apiToken}) => {
-    verifyToken({apiToken})
+    dverifyToken({apiToken})
   })
 
 
