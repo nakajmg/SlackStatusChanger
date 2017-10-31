@@ -28,6 +28,10 @@ let preference = null
 menubar.on('ready', () => {
   let menuWindow = menubar.window.webContents
 
+  menubar.window.on('close', () => {
+    app.quit()
+  })
+
   /**
    * for debug
    */
@@ -176,7 +180,6 @@ menubar.on('ready', () => {
     [types.EXIT_APP]() {
       if (preference) preference.close()
       menubar.window.close()
-      app.quit()
     },
   }
   each(listeners, (cb, channel) => ipcMain.on(channel, cb))

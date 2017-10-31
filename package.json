@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "pack": "electron-packager . SlackStatusChanger --platform=darwin --arch=x64 --overwrite"
+    "pack": "electron-packager . SlackStatusChanger --platform=darwin --arch=x64 --overwrite --icon=icon.icns"
   },
   "repository": "https://github.com/nakajmg/SlackStatusChanger",
   "author": "nakajmg",
