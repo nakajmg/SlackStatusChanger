@@ -1,6 +1,5 @@
 //const electron = require('electron')
-const {BrowserWindow} = require('electron')
-const {ipcMain} = require('electron')
+const {BrowserWindow, ipcMain, Menu, app} = require('electron')
 const axios = require('axios')
 const types = require('./store/types')
 const APIError = require('./APIError')
@@ -15,7 +14,13 @@ const menubar = require('menubar')({
   transparent: true,
   frame: false,
   width: 280,
-  icon: 'icon.png',
+  icon: `${__dirname}/icon.png`,
+})
+
+menubar.app.once('ready', () => {
+  const menuTemplate = require('./menuTemplate')
+  const menu = Menu.buildFromTemplate(menuTemplate)
+  Menu.setApplicationMenu(menu)
 })
 
 let preference = null
@@ -166,6 +171,7 @@ menubar.on('ready', () => {
   ipcMain.on(types.EXIT_APP, (e) => {
     if (preference) preference.close()
     menubar.window.close()
+    app.quit()
   })
 //  preference.show()
 })

@@ -1,23 +1,18 @@
 {
   "name": "SlackStatusChanger",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "To change Slack staus",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "electron-packager . SlackStatusChanger --platform=darwin --arch=x64 --overwrite"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
-  ],
+  "repository": "https://github.com/nakajmg/SlackStatusChanger",
   "author": "nakajmg",
-  "license": "MIT2.0",
+  "license": "GPL",
   "devDependencies": {
-    "electron": "1.7.9"
+    "electron": "1.7.9",
+    "electron-packager": "^9.1.0"
   },
   "dependencies": {
     "axios": "^0.17.0",
