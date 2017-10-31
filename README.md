@@ -2,7 +2,7 @@
 
 For change status quickly and automatically on menubar.
 
-![ss](./ss/app.png)
+![Screen Shot](https://github.com/nakajmg/SlackStatusChanger/raw/gh-pages/ss/app.png)
 
 ## Download & Usage
 
