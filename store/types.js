@@ -20,4 +20,5 @@ module.exports = {
   CHANGE_PREFERENCE_MENU: 'changePreferenceMenu',
   RESTART_APP: 'restartApp',
   EXIT_APP: 'exitApp',
+  READY_TO_SHOW: 'readyToShow',
 }

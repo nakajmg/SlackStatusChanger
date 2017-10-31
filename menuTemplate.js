@@ -1,4 +1,5 @@
-module.exports = [
+const {app} = require('electron')
+const template = [
   {
     label: 'Edit',
     submenu: [
@@ -82,3 +83,5 @@ if (process.platform === 'darwin') {
     {role: 'front'}
   ]
 }
+
+module.exports = template

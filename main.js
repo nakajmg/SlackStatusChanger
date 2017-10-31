@@ -3,7 +3,7 @@ const {BrowserWindow, ipcMain, Menu, app} = require('electron')
 const axios = require('axios')
 const types = require('./store/types')
 const APIError = require('./APIError')
-const {debounce} = require('lodash')
+const {keys, each, debounce} = require('lodash')
 
 function apiErrorReport({name, message}) {
   console.error(name, message)
@@ -34,11 +34,6 @@ menubar.on('ready', () => {
   //menubar.showWindow()
   //menuWindow.openDevTools()
 
-
-  function setCurrentStatus (profile){
-    menuWindow.send(types.SET_CURRENT_STATUS, profile)
-  }
-
   /**
    * @param {string} apiToken
    */
@@ -55,14 +50,14 @@ menubar.on('ready', () => {
       .then(body => {
         if (body.error) throw new APIError(body)
         console.log('sync success')
-        setCurrentStatus(body.profile)
+        menuWindow.send(types.SET_CURRENT_STATUS, body.profile)
       })
   }
-  const dsyncStatus = debounce(syncStatus, 100)
 
-  ipcMain.on(types.SYNC_STATUS, (e, {apiToken}) => dsyncStatus({apiToken}))
-
-  // tokenをセットしてsyncStatusを呼ぶ役
+  /**
+   * @param {string} apiToken
+   * tokenをセットしてsyncStatusを呼ぶ役
+   */
   function verifyToken({apiToken}) {
     // tokenのverifyを行う
     // verifyが成功したらINITIALIZE_SUCCEESSかなにか飛ばしてINITIALIZEを完了する
@@ -80,6 +75,10 @@ menubar.on('ready', () => {
       })
   }
 
+  /**
+   * @param {string} apiToken
+   * tokenの検証が成功したら各windowに通知
+   */
   function verifySuccess({apiToken}) {
     menuWindow.send(types.TOKEN_VERIFIED, {apiToken})
     if (preference) {
@@ -87,13 +86,14 @@ menubar.on('ready', () => {
     }
   }
 
-  const dverifyToken = debounce(verifyToken, 100)
-  ipcMain.on(types.INITIALIZE_STATUS, (e, {apiToken}) => {
-    dverifyToken({apiToken})
-  })
 
-
-  ipcMain.on(types.SET_CURRENT_STATUS, (e, {apiToken, status_emoji, status_text}) => {
+  /**
+   * @param {string} apiToken
+   * @param {string} status_emoji
+   * @param {string} status_text
+   * 絵文字とテキストをAPIに投げる
+   */
+  function setCurrentStatus({apiToken, status_emoji, status_text}) {
     const url = 'https://slack.com/api/users.profile.set'
     const options = {
       url,
@@ -111,13 +111,14 @@ menubar.on('ready', () => {
       .then(res => res.data)
       .then(body => {
         console.log(body.ok, body.profile.status_emoji, body.profile.status_text)
-        setCurrentStatus(body.profile)
+        menuWindow.send(types.SET_CURRENT_STATUS, body.profile)
       })
       .catch(apiErrorReport)
-  })
-
+  }
 
   /**
+   * @param {string} preferenceName - メニューの名前
+   * @param {error} error - カンマ区切りでnameとmessage
    * 設定画面開く
    */
   function openPreference({preferenceName, error}) {
@@ -137,41 +138,47 @@ menubar.on('ready', () => {
       show: false,
     })
 
+    const listeners = {
+      [types.UPDATE_TOKEN](e, {apiToken}) {
+        verifyToken({apiToken})
+      },
+      [types.READY_TO_SHOW]() {
+        preference.show()
+      }
+    }
+    each(listeners, (cb, channel) => ipcMain.on(channel, cb))
+
     const errorParam = error ? `&error=${error}` : ''
     preference.loadURL(`file://${__dirname}/preference.html?name=${preferenceName}${errorParam}`)
-    preference.on('ready-to-show', () => {
-      preference.show()
-    })
 
     preference.on('close', () => {
       menuWindow.send(types.CLOSE_PREFERENCE)
       preference = null
-    })
-
-    ipcMain.on(types.UPDATE_TOKEN, (e, {apiToken}) => {
-      verifyToken({apiToken})
+      ipcMain.removeAllListeners(keys(listeners))
     })
   }
 
+  const dsyncStatus = debounce(syncStatus, 100)
+  const dverifyToken = debounce(verifyToken, 100)
 
-  ipcMain.on(types.OPEN_PREFERENCE, (e, params = {}) => {
-    openPreference(params)
-  })
+  const listeners = {
+    [types.SYNC_STATUS](e, {apiToken}) { dsyncStatus({apiToken}) },
+    [types.INITIALIZE_STATUS](e, {apiToken}) { dverifyToken({apiToken}) },
+    [types.SET_CURRENT_STATUS](e, {apiToken, status_emoji, status_text}) {
+      setCurrentStatus({apiToken, status_emoji, status_text})
+    },
+    [types.OPEN_PREFERENCE](e, params = {}) { openPreference(params) },
+    [types.UPDATE_PREFERENCE](e, payload) { menuWindow.send(types.UPDATE_PREFERENCE, payload) },
+    [types.RESTART_APP]() {
+      if (preference) preference.close()
+      menuWindow.reload()
+    },
+    [types.EXIT_APP]() {
+      if (preference) preference.close()
+      menubar.window.close()
+      app.quit()
+    },
+  }
+  each(listeners, (cb, channel) => ipcMain.on(channel, cb))
 
-  // preferenceでデータを更新したらmenuWindowで更新処理
-  ipcMain.on(types.UPDATE_PREFERENCE, (e, payload) => {
-    menuWindow.send(types.UPDATE_PREFERENCE, payload)
-  })
-
-  ipcMain.on(types.RESTART_APP, (e) => {
-    if (preference) preference.close()
-    menuWindow.reload()
-  })
-
-  ipcMain.on(types.EXIT_APP, (e) => {
-    if (preference) preference.close()
-    menubar.window.close()
-    app.quit()
-  })
-//  preference.show()
 })

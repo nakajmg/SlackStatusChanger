@@ -12,7 +12,6 @@ Vue.component('Emoji', Emoji)
 // API token取得方法をREADMEに書いてリンク貼る
 storage.get(types.STORAGE_DATA, (err, data) => {
   if (err) return console.log(err)
-  console.log(data)
   initialize(data)
 })
 
@@ -41,6 +40,7 @@ function initialize(data) {
         </main>
       </div>
       `,
+
     data() {
       const parsed = queryString.parse(location.search)
 
@@ -62,6 +62,10 @@ function initialize(data) {
         this.tokenVerified = true
         this.apiToken = apiToken
         this.error = null
+      })
+
+      this.$nextTick(() => {
+        ipcRenderer.send('readyToShow')
       })
     },
 
