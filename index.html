@@ -3,13 +3,193 @@
   <head>
     <meta charset="UTF-8">
     <title>Slack Status Changer</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css">
+    <link rel="stylesheet" href="./gh-pages.css">
   </head>
   <body>
-    <div id="app"></div>
-    <script>
-      // You can also require other files to run in this process
-      require('./renderer.js')
-    </script>
+    <main id="main">
+      <section class="hero is-info is-medium">
+        <!--リンク並べる  -->
+        <div class="hero-bg"></div>
+  
+        <div class="hero-body">
+          <div class="container has-text-centered">
+            <div class="title">
+              <div class="hero-icons">
+                <Emoji set="google" :size="30" emoji=":house_with_garden:"></Emoji>
+                <Emoji set="google" :size="30" emoji=":office:"></Emoji>
+                <Emoji set="google" :size="30" emoji=":smiley:"></Emoji>
+                <Emoji set="google" :size="30" emoji=":palm_tree:"></Emoji>
+                <Emoji set="google" :size="30" emoji=":bus:"></Emoji>
+              </div>
+              <p class="cb">
+                <Emoji :size="40" emoji=":robot_face:" set="google"></Emoji>
+                <span>
+                  SlackStatusChanger
+                </span>
+                <Emoji :size="40" emoji=":robot_face:" set="google"></Emoji>
+              </p>
+            </div>
+            <div class="subtitle">
+              change status quickly and automatically
+              <div class="hero-icons">
+                <Emoji set="google" :size="30" emoji=":video_game:"></Emoji>
+                <Emoji set="google" :size="30" emoji=":cake:"></Emoji>
+                <Emoji set="google" :size="30" emoji=":ramen:"></Emoji>
+                <Emoji set="google" :size="30" emoji=":beer:"></Emoji>
+                <Emoji set="google" :size="30" emoji=":tea:"></Emoji>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container">
+          <div class="content">
+            <p class="ss -app">
+              <img src="./ss/app.png">
+            </p>
+            <p class="has-text-centered">
+              SlackStatusChanger is to change Slack user-status quickly and automatically.
+            </p>
+          </div>
+        </div>
+      </section>
+  
+  
+      <section class="section -dl">
+        <div class="container">
+          <div class="content has-text-centered">
+            <h1 class="title">
+              <Emoji :size="32" emoji=":link:" set="google"></Emoji>
+              <span>Download App</span>
+              <Emoji :size="32" emoji=":drooling_face:" set="google"></Emoji>
+            </h1>
+            <p>
+              <a class="button is-info is-large">Download</a>
+            </p>
+            <p>
+              available on macOS X
+            </p>
+          </div>
+        </div>
+      </section>
+      
+      
+      <section class="section">
+        <div class="container">
+          <div class="content has-text-centered">
+            <h1 class="title">
+              <Emoji :size="28" emoji=":running:" set="google"></Emoji>
+              <span>
+                Change Quickly
+              </span>
+              <Emoji :size="28" emoji=":dash:" set="google"></Emoji>
+            </h1>
+            <p class="ss -small">
+              <img src="./ss/app_01.png" alt="">
+            </p>
+            <p>You can change status on menubar</p>
+          </div>
+        </div>
+      </section>
+      
+      <section class="section">
+        <div class="container">
+          <div class="content has-text-centered">
+            <h1 class="title">
+              <Emoji :size="28" emoji=":house_with_garden:" set="google"></Emoji>
+              <span>
+                Preset
+              </span>
+              <Emoji :size="28" emoji=":office:" set="google"></Emoji>
+            </h1>
+            <p class="ss -half">
+              <img src="./ss/preference_01.png" alt="">
+            </p>
+            <p>
+              Preset is editable anything you want.
+            </p>
+          </div>
+        </div>
+      </section>
+      
+      <section class="section">
+        <div class="container">
+          <div class="content has-text-centered">
+            <h1 class="title">
+              <Emoji :size="28" emoji=":signal_strength:" set="google"></Emoji>
+              <span>
+                Change status automatically
+              </span>
+              <Emoji :size="28" emoji=":alarm_clock:" set="google"></Emoji>
+            </h1>
+            <p class="ss -half">
+              <img src="./ss/preference_02.png" alt="">
+            </p>
+            <p>
+              Associate your status with Wi-Fi (SSID).
+            </p>
+            <p>
+              This app will change status automatically when connected to the associated Wi-Fi.
+            </p>
+          </div>
+        </div>
+      </section>
+      
+      <section class="section">
+        <div class="container">
+          <div class="content has-text-centered">
+            <h1 class="title">
+              <Emoji :size="28" emoji=":kissing_heart:" set="google"></Emoji>
+              <span>
+                Choose your favorite Emoji-Style
+              </span>
+              <Emoji :size="28" emoji=":heart_eyes_cat:" set="google"></Emoji>
+            </h1>
+            <p class="ss -half">
+              <img src="./ss/preference_03.png" alt="">
+            </p>
+            <p>
+              You can choose what you like from the four Emoji-Style.
+            </p>
+          </div>
+          
+        </div>
+      </section>
+      
+      <section class="section -dl">
+        <div class="container">
+          <div class="content has-text-centered">
+            <h1 class="title">
+              <Emoji :size="32" emoji=":link:" set="google"></Emoji>
+              <span>Download App</span>
+              <Emoji :size="32" emoji=":drooling_face:" set="google"></Emoji>
+            </h1>
+            <p>
+              <a class="button is-info is-large">Download</a>
+            </p>
+            <p>
+              available on macOS X
+            </p>
+          </div>
+        </div>
+      </section>
+      
+      <footer class="footer">
+        <div class="content has-text-centered">
+          <div class="content has-text-centered">
+            <p class="cb">
+              <Emoji :size="28" emoji=":robot_face:" set="google"></Emoji>
+              <span>
+                <strong>SlackStatusChanger</strong> by <a href="https://twitter.com/nakajmg" target="_blank">@nakajmg</a>
+              </span>
+              <Emoji :size="28" emoji=":robot_face:" set="google"></Emoji>
+            </p>
+          </div>
+        </div>
+      </footer>
+    </main>
+    <script src="./dist/app.js"></script>
   </body>
 </html>
