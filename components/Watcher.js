@@ -12,7 +12,7 @@ module.exports = {
   },
 
   computed: mapState({
-    autorun: 'autorun',
+    auto: 'auto',
   }),
 
   created() {
@@ -20,7 +20,7 @@ module.exports = {
      * 自動実行を監視
      */
     this.$store.watch((state) => {
-      return state.autorun.enable
+      return state.auto.enable
     }, (enable) => {
       if (enable) {
         this.startWatcher()
@@ -31,9 +31,9 @@ module.exports = {
     })
 
     /**
-     * 起動時にautorunがenableだったら自動実行開始
+     * 起動時にautoがenableだったら自動実行開始
      */
-    if (this.autorun.enable) {
+    if (this.auto.enable) {
       this.setSSID()
       this.startWatcher()
     }
@@ -43,8 +43,8 @@ module.exports = {
     /**
      * intervalに変更があればタイマーリセット
      */
-    'autorun.interval'() {
-      if (this.autorun.enable) {
+    'auto.interval'() {
+      if (this.auto.enable) {
         this.startWatcher()
       }
       else {
@@ -56,7 +56,7 @@ module.exports = {
   methods: assign({
     startWatcher() {
       // intervalが60/s以下にならないように
-      const interval = this.autorun.interval > 60 ? this.autorun.interval * 1000 : 60000
+      const interval = this.auto.interval > 60 ? this.auto.interval * 1000 : 60000
       // 多重起動しないようにタイマーリセット
       this.stopWatcher()
       this.watcher = setInterval(() => {

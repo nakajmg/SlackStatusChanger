@@ -12,7 +12,7 @@ module.exports = {
       <div class="control" style="margin-right: 10px;">
         <label class="label Contents__Label">
           <Emoji emoji=":signal_strength:" :set="emojiSet" :size="20"/>
-          <span>Autorun</span>
+          <span>Auto</span>
         </label>
         
         <div class="control">
@@ -117,14 +117,14 @@ module.exports = {
 
   methods: {
     update(payload) {
-      const autorun = assign({}, {
+      const auto = assign({}, {
         enable: this.value.enable,
         interval: this.value.interval,
         settings: this.value.settings,
       }, payload)
 
-      this.$emit('input', autorun)
-      ipcRenderer.send(types.UPDATE_PREFERENCE, {autorun})
+      this.$emit('input', auto)
+      ipcRenderer.send(types.UPDATE_PREFERENCE, {auto})
     },
 
     updateEnable(enable) {

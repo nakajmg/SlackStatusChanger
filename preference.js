@@ -33,7 +33,7 @@ function initialize(data) {
             v-model="apiToken"
             :tokenVerified="tokenVerified"
           />
-          <Autorun v-show="isSelectedMenu('autorun')" :emojiSet="emojiSet" v-model="autorun"/>        
+          <Auto v-show="isSelectedMenu('auto')" :emojiSet="emojiSet" v-model="auto"/>        
           <EmojiStyle v-show="isSelectedMenu('emoji')" v-model="emojiSet"/>
           <Preset v-show="isSelectedMenu('preset')" v-model="preset" :emojiSet="emojiSet"/>
           <ResetStorage v-show="isSelectedMenu('reset')" :emojiSet="emojiSet" />

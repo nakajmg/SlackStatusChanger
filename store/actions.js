@@ -102,7 +102,7 @@ module.exports = {
     if (!ssid) return console.log('SSIDない')
     if (ssid === state.prevSSID) return console.log('SSID変わってない')
 
-    const status = find(state.autorun.settings, (setting) => {
+    const status = find(state.auto.settings, (setting) => {
       return includes(setting.ssid.split(','), ssid)
     })
 

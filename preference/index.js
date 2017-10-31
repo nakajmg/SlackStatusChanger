@@ -2,7 +2,7 @@ const EmojiStyle = require('./EmojiStyle')
 const Preset = require('./Preset')
 const APIToken = require('./APIToken')
 const MenuList = require('./MenuList')
-const Autorun = require('./Autorun')
+const Auto = require('./Auto')
 const ErrorReport = require('./ErrorReport')
 const ResetStorage = require('./ResetStorage')
 
@@ -11,7 +11,7 @@ module.exports = {
   Preset,
   APIToken,
   MenuList,
-  Autorun,
+  Auto,
   ErrorReport,
   ResetStorage,
 }

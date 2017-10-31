@@ -39,7 +39,7 @@ module.exports = {
   ],
 
   // statusの自動切り替え
-  autorun: {
+  auto: {
     enable: false,
     interval: 300,
     settings: [

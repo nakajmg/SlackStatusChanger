@@ -24,9 +24,9 @@ module.exports = {
           type: 'preset',
         },
         {
-          label: 'Autorun',
+          label: 'Auto',
           emoji: ':signal_strength:',
-          type: 'autorun',
+          type: 'auto',
         },
         {
           label: 'Emoji',
