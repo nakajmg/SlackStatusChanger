@@ -48,7 +48,7 @@ module.exports = {
       
     </div>
     
-    <div class="field">This feature provide automatically change status <br> which based on connected Wi-Fi(SSID).</div>
+    <div class="field">This feature automatically changes your status <br> which based on the Wi-Fi(SSID).</div>
     
     <div v-if="value.settings.length" class="AutorunList" :class="{'-Enable': value.enable}">
       <div v-for="(setting, index) in value.settings" class="AutorunList__Item">
