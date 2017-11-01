@@ -2,7 +2,7 @@
   position: relative;
 }
 .hero-bg {
-  background-image: url(https://unpkg.com/emoji-datasource-apple@3.0.0/img/apple/sheets/64.png);
+  background-image: url(./32.png);
   background-position: center center;
   background-size: 1400px auto;
   position: absolute;

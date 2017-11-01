@@ -1,19 +1,8 @@
 import Vue from 'vue/dist/vue.min'
-import {Emoji} from 'emoji-mart-vue'
+import {Emoji} from './emoji-mart-vue/dist/emoji-mart'
 
 new Vue({
   el: '#main',
-  data() {
-    return {
-      type: 'apple',
-    }
-  },
-
-  methods: {
-    changeSet(type) {
-      this.type = type
-    }
-  },
 
   components: {
     Emoji
