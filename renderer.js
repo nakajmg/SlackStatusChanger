@@ -3,7 +3,7 @@ const store = require('./store')
 const assign = require('object-assign')
 const {mapState, mapActions} = require('vuex')
 const types = require('./store/types')
-const components = require('./components')
+const components = require('./renderer')
 const {Emoji} = require('emoji-mart-vue')
 const Promise = require('bluebird')
 
