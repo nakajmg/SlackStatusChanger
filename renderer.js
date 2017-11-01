@@ -7,6 +7,14 @@ const components = require('./components')
 const {Emoji} = require('emoji-mart-vue')
 const Promise = require('bluebird')
 
+Vue.mixin({
+  methods: {
+    emojiSheet(set, size) {
+      return `${__dirname}/img/${set}64.png`
+    }
+  }
+})
+
 new Vue({
   el: '#app',
   template: `
@@ -22,7 +30,7 @@ new Vue({
     </template>
     <template v-else>
       <div class="NoToken">
-        <Emoji emoji=":key:"/>
+        <Emoji emoji=":key:" :set="emojiSet" :backgroundImageFn="emojiSheet" :size="24"/>
         <span>
           Please set your API token on <a @click.prevent="openPreference('token')" href="#">Preference</a>
         </span>
@@ -52,6 +60,7 @@ new Vue({
   }, mapState({
     initialized: 'initialized',
     apiToken: 'apiToken',
+    emojiSet: 'emojiSet'
   })),
 
   methods: assign({

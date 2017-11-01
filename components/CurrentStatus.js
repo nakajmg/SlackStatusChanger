@@ -12,6 +12,8 @@ module.exports = {
           :title="profile.status_emoji"
           :emoji="profile.status_emoji"
           :set="emojiSet"
+          :backgroundImageFn="emojiSheet"
+          :size="24"
           @click="showEmojiPicker"
           v-if="profile.status_emoji"
         />
@@ -20,16 +22,15 @@ module.exports = {
           emoji=":smiley:"
           @click="showEmojiPicker"
           :set="emojiSet"
+          :backgroundImageFn="emojiSheet"
+          :size="24"
           v-else
         />
         <span class="text">
           <input type="text" :value="profile.status_text" @change="onChangeText" title="Input your status">
-          <Emoji @click="clearStatus" class="clear" emoji=":x:" :set="emojiSet" title="Clear Status"/>
+          <Emoji @click="clearStatus" class="clear" emoji=":x:" :set="emojiSet" title="Clear Status" :backgroundImageFn="emojiSheet" :size="18"/>
         </span>
       </div>
-      <!--<span>-->
-        <!--<Emoji @click="syncStatus" emoji=":arrows_counterclockwise:" :set="emojiSet"/>    -->
-      <!--</span>-->
 
       <Picker v-if="pickerVisible"
         class="picker"
@@ -39,6 +40,7 @@ module.exports = {
         :perLine="7"
         title="Pick a Emoji"
         @click="onClickEmoji"
+        :backgroundImageFn="emojiSheet"
        />
     </div>
   `,

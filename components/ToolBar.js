@@ -5,10 +5,10 @@ const {mapActions, mapState} = require('vuex')
 module.exports = {
   template: `
   <div class="ToolBar">
-    <Emoji @click="exitApp" emoji=":end:" :set="emojiSet" title="Quit App" style="margin-right: auto;"/>
-    <Emoji v-if="false" @click="resetData" emoji=":bomb:" :set="emojiSet" title="Reset Preference"/>
-    <Emoji v-if="tokenVerified" @click="syncStatus" emoji=":arrows_counterclockwise:" :set="emojiSet" title="Sync Status"/>
-    <Emoji @click="openPreference()" emoji=":gear:" :set="emojiSet" title="Open Preference"/>
+    <Emoji @click="exitApp" emoji=":end:" :set="emojiSet" title="Quit App" style="margin-right: auto;" :backgroundImageFn="emojiSheet" :size="24"/>
+    <Emoji v-if="false" @click="resetData" emoji=":bomb:" :set="emojiSet" title="Reset Preference" :backgroundImageFn="emojiSheet" :size="24"/>
+    <Emoji v-if="tokenVerified" @click="syncStatus" emoji=":arrows_counterclockwise:" :set="emojiSet" title="Sync Status" :backgroundImageFn="emojiSheet" :size="24"/>
+    <Emoji @click="openPreference()" emoji=":gear:" :set="emojiSet" title="Open Preference" :backgroundImageFn="emojiSheet" :size="24"/>
   </div>
   `,
 
