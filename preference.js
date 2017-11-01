@@ -8,6 +8,13 @@ const components = require('./preference/index')
 const queryString = require('query-string')
 
 Vue.component('Emoji', Emoji)
+Vue.mixin({
+  methods: {
+    emojiSheet(set, size) {
+      return `${__dirname}/img/${set}64.png`
+    }
+  }
+})
 
 // API token取得方法をREADMEに書いてリンク貼る
 storage.get(types.STORAGE_DATA, (err, data) => {

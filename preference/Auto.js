@@ -11,7 +11,7 @@ module.exports = {
     
       <div class="control" style="margin-right: 10px;">
         <label class="label Contents__Label">
-          <Emoji emoji=":signal_strength:" :set="emojiSet" :size="20"/>
+          <Emoji emoji=":signal_strength:" :set="emojiSet" :size="20" :backgroundImageFn="emojiSheet" />
           <span>Auto</span>
         </label>
         
@@ -36,7 +36,7 @@ module.exports = {
       
       <div class="control">
         <label class="label Contents__Label">
-          <Emoji emoji=":alarm_clock:" :set="emojiSet" :size="20"/>
+          <Emoji emoji=":alarm_clock:" :set="emojiSet" :size="20" :backgroundImageFn="emojiSheet" />
           <span>Interval (s)</span>
         </label>
         <div class="field is-flex">
@@ -65,7 +65,7 @@ module.exports = {
         
         <label class="control has-icons-left AutorunList__ItemStatus">
           <span @click="showPicker(index)" class="icon is-left AutorunList__ItemEmoji">
-            <Emoji :size="20" :emoji="setting.status_emoji" :set="emojiSet"/>
+            <Emoji :size="20" :emoji="setting.status_emoji" :set="emojiSet" :backgroundImageFn="emojiSheet"/>
           </span>
           <input class="input"
             :value="setting.status_text"
@@ -75,7 +75,7 @@ module.exports = {
         </label>
         
         <span @click="removeSetting(index)" class="icon AutorunList__ItemRemove">
-          <Emoji :size="14" emoji=":x:" :set="emojiSet"/>
+          <Emoji :size="14" emoji=":x:" :set="emojiSet" :backgroundImageFn="emojiSheet"/>
         </span>
       </div>
       
@@ -83,17 +83,18 @@ module.exports = {
     
     <div class="control is-clearfix AutorunList__Add" style="text-align: center;">
       <span @click="addSetting" class="icon is-large">
-        <Emoji :size="18" emoji=":heavy_plus_sign:" :set="emojiSet"/>
+        <Emoji :size="18" emoji=":heavy_plus_sign:" :set="emojiSet" :backgroundImageFn="emojiSheet"/>
       </span>
     </div>
     <div v-if="!value.settings.length" style="text-align: center;">
-      Click <Emoji :size="12" emoji=":heavy_plus_sign:" :set="emojiSet"/> button to add setting
+      Click <Emoji :size="12" emoji=":heavy_plus_sign:" :set="emojiSet" :backgroundImageFn="emojiSheet"/> button to add setting
     </div>
     
     <Picker v-show="selectedIndex !== null" class="EmojiPicker"
       :set="emojiSet"
       :sheetSize="32"
       :emoji="selectedEmoji"
+      :backgroundImageFn="emojiSheet" 
       title="Pick a Emoji"
       @click="onClickEmoji"
     />

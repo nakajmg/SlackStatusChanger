@@ -8,7 +8,7 @@ module.exports = {
   <section class="Contents Preset">
     <div class="field">
       <label class="label Contents__Label">
-        <Emoji emoji=":scroll:" :set="emojiSet" :size="20"/>
+        <Emoji emoji=":scroll:" :set="emojiSet" :size="20" :backgroundImageFn="emojiSheet"/>
         <span>Preset</span>
       </label>
       
@@ -16,28 +16,29 @@ module.exports = {
         <div class="control has-icons-left has-icons-right">
           <input class="input is-medium PresetItem__Text" :value="item.status_text" @input="updateText($event, index)">
           <span @click="showPicker(index)" class="icon is-left PresetItem__Emoji">
-            <Emoji :emoji="item.status_emoji" :set="emojiSet"/>
+            <Emoji :emoji="item.status_emoji" :set="emojiSet" :backgroundImageFn="emojiSheet" :size="24"/>
           </span>
           <span class="icon is-right PresetItem__Remove">
-            <Emoji emoji=":x:" :set="emojiSet" :size="16"/>
+            <Emoji emoji=":x:" :set="emojiSet" :size="16" :backgroundImageFn="emojiSheet"/>
           </span>
         </div>
       </div>
       
       <div v-if="false" class="control is-clearfix" style="text-align: center;">
         <span class="icon is-large">
-          <Emoji class="PresetItem__Add" emoji=":heavy_plus_sign:" :set="emojiSet"/>
+          <Emoji class="PresetItem__Add" emoji=":heavy_plus_sign:" :set="emojiSet" :backgroundImageFn="emojiSheet"  :size="24"/>
         </span>
       </div>
       
       
     </div>
     <Picker v-show="selectedIndex !== null" class="EmojiPicker"
+      @click="onClickEmoji"
       :set="emojiSet"
       :sheetSize="32"
       :emoji="selectedEmoji"
+      :backgroundImageFn="emojiSheet" 
       title="Pick a Emoji"
-      @click="onClickEmoji"
     />
   </section>
   `,

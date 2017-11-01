@@ -6,6 +6,7 @@ module.exports = {
         emoji=":man-gesturing-no:"
         :set="emojiSet"
         :size="20"
+        :backgroundImageFn="emojiSheet" 
         style="marign-right: 5px;"
       />
       <span>

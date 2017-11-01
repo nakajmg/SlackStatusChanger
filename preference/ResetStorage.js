@@ -9,7 +9,7 @@ module.exports = {
   <section class="Contents">
     <div class="field">
       <label class="label Contents__Label">
-        <Emoji emoji=":exclamation:" :set="emojiSet" :size="20"/>
+        <Emoji emoji=":exclamation:" :set="emojiSet" :size="20" :backgroundImageFn="emojiSheet"/>
         <span>Resetting the data cannot be undone</span>
       </label>
     </div>
@@ -17,7 +17,7 @@ module.exports = {
       <div>
         <div>
           <button @click="openDialog" class="button is-medium is-danger">
-            <Emoji :size="20" emoji=":bomb:" :set="emojiSet" style="margin-right: 10px;" />
+            <Emoji :size="20" emoji=":bomb:" :set="emojiSet" style="margin-right: 10px;" :backgroundImageFn="emojiSheet" />
             Reset
           </button>
         </div>

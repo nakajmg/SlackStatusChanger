@@ -7,7 +7,7 @@ module.exports = {
   <section class="Contents">
     <div class="field">
       <label class="label Contents__Label">
-        <Emoji emoji=":key:" :set="emojiSet" :size="20"/>
+        <Emoji emoji=":key:" :set="emojiSet" :size="20" :backgroundImageFn="emojiSheet" />
         <span>API token</span>
       </label>
       <div class="field is-clearfix is-flex">
@@ -20,6 +20,7 @@ module.exports = {
             emoji=":heavy_check_mark:"
             :set="emojiSet"
             :size="16"
+            :backgroundImageFn="emojiSheet" 
           />&nbsp;
           <span>Verify</span>
         </button>
@@ -31,7 +32,7 @@ module.exports = {
       </div>
       <div class="Caution">
           <a @click.prevent="openLink('https://api.slack.com/apps')" href="https://api.slack.com/apps" target="_blank">
-            <Emoji emoji=":link:" :size="12" :set="emojiSet"/>
+            <Emoji emoji=":link:" :size="12" :set="emojiSet" :backgroundImageFn="emojiSheet" />
             <span>Get your API token.</span>
           </a>
       </div>

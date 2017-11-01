@@ -7,7 +7,7 @@ module.exports = {
       @click="selectMenu(menu.type)"
       :style="menu.style"
     >
-      <Emoji :emoji="menu.emoji" :set="emojiSet"/>
+      <Emoji :emoji="menu.emoji" :set="emojiSet" :backgroundImageFn="emojiSheet" :size="24"/>
       <span class="MenuItem__label">{{menu.label}}</span>
     </span>
   </div>

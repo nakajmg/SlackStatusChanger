@@ -7,7 +7,7 @@ module.exports = {
   <section class="Contents">
     <div class="field">
       <label class="label Contents__Label">
-        <Emoji emoji=":smiley:" :set="emojiSet" :size="20"/>
+        <Emoji emoji=":smiley:" :set="emojiSet" :size="20" :backgroundImageFn="emojiSheet" />
         <span>Emoji Style</span>
       </label>
       <div class="EmojiStyle control">
@@ -17,7 +17,7 @@ module.exports = {
             :value="emojiType.value"
           >
           <div class="EmojiType">
-            <Emoji :size="20" emoji=":smiley:" :set="emojiType.value"/>
+            <Emoji :size="20" emoji=":smiley:" :set="emojiType.value" :backgroundImageFn="emojiSheet" />
             <span>&nbsp;{{emojiType.label}}</span>
           </div>
         </label>
