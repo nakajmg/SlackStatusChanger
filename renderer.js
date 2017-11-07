@@ -29,9 +29,9 @@ new Vue({
     </template>
     <template v-else>
       <div class="NoToken">
-        <Emoji emoji=":key:" :set="emojiSet" :backgroundImageFn="emojiSheet" :size="24"/>
+        <Emoji emoji=":link:" :set="emojiSet" :backgroundImageFn="emojiSheet" :size="24"/>
         <span>
-          Please set your API token on <a @click.prevent="openPreference('token')" href="#">Preference</a>
+          <a @click.prevent="openPreference('account')" href="#">Please Sign in<br> your Slack account</a>
         </span>
       </div>
     </template>

@@ -35,7 +35,7 @@ module.exports = {
       </div>
       <div>
         <button class="button is-info is-medium is-pulled-right" @click="signOut">
-          <Emoji :set="emojiSet" emoji=":outbox_tray:" :size="22"/>
+          <Emoji :set="emojiSet" emoji=":outbox_tray:" :size="22" :backgroundImageFn="emojiSheet"/>
           <span style="margin-left: 10px;">
            Sign Out
           </span>
