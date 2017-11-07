@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Sign in with Slack</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    
+    webview {
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  
+<script>
+  const tokenUrl = 'https://us-central1-slack-user-status.cloudfunctions.net/callback'
+  const Vue = require('vue/dist/vue.common')
+  const types = require('./store/types')
+  const {ipcRenderer} = require('electron')
+  new Vue({
+    el: '#app',
+    template: `
+  <div>
+    <div v-if="token">
+    {{token}}
+    </div>
+    <webview  v-else ref="webview" :src="src" preload="./signin.js"></webview>
+  </div>
+  `,
+
+    data() {
+      return {
+        initialized: false,
+        token: null,
+        src: `https://slack.com/oauth/authorize?scope=users.profile:read,users.profile:write,team:read&client_id=2320436460.264692834599&redirect_uri=${tokenUrl}`,
+      }
+    },
+    async mounted() {
+      const webview = this.$refs.webview
+      webview.addEventListener(types.DOM_READY, async () => {
+        webview.addEventListener(types.IPC_MESSAGE, async (e) => {
+          const apiToken = e.args[0]
+          await this.clearWebviewStorage()
+          if (apiToken === 'error') {
+            webview.src = this.src
+          }
+          else {
+            this.token = apiToken
+          }
+        })
+
+        webview.addEventListener(types.DID_NAVIGATE, ({url}) => {
+          if (~url.indexOf(tokenUrl)) {
+            webview.addEventListener(types.DOM_READY, () => {
+              webview.send(types.GET_WEBVIEW_CONTENT)
+            }, {once: true})
+          }
+        })
+        
+      }, {once: true})
+
+    },
+    
+    watch: {
+      token(apiToken) {
+        ipcRenderer.send(types.GOT_TOKEN, {apiToken})
+      }
+    },
+
+    methods: {
+      clearWebviewStorage() {
+        const session = this.$refs.webview.getWebContents().session
+        return new Promise((resolve, reject) => {
+          session.clearStorageData(() => {
+            resolve()
+          })
+        })
+      }
+    }
+  })
+</script>
+</body>
+</html>

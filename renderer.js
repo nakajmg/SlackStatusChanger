@@ -5,7 +5,6 @@ const {mapState, mapActions} = require('vuex')
 const types = require('./store/types')
 const components = require('./renderer/index.js')
 const {Emoji} = require('emoji-mart-vue')
-const Promise = require('bluebird')
 
 Vue.mixin({
   methods: {
@@ -19,7 +18,7 @@ new Vue({
   el: '#app',
   template: `
   <div class="App" :class="{'-Uninitialized': !initialized}">
-    <template v-if="initialized">
+    <template v-if="initialized && apiToken !== null">
       <div class="App-Status">
         <CurrentStatus/>
       </div>
@@ -50,7 +49,7 @@ new Vue({
   async created() {
     await this.initializeStore()
     if (!this.apiToken) {
-      this.openPreference('token')
+      this.openPreference('account')
     }
     this.initializeStatus()
   },

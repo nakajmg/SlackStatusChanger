@@ -34,9 +34,9 @@ module.exports = {
           type: 'emoji',
         },
         {
-          label: 'Token',
-          emoji: ':key:',
-          type: 'token',
+          label: 'Account',
+          emoji: ':link:',
+          type: 'account',
         },
         {
           label: 'Reset',

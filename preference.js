@@ -6,6 +6,7 @@ const assign = require('object-assign')
 const types = require('./store/types')
 const components = require('./preference/index')
 const queryString = require('query-string')
+const axios = require('axios')
 
 Vue.component('Emoji', Emoji)
 Vue.mixin({
@@ -35,10 +36,13 @@ function initialize(data) {
         </header>
         <main class="Main">
           <ErrorReport v-if="error" :error="error" :emojiSet="emojiSet"/>
-          <APIToken v-show="isSelectedMenu('token')"
-            :emojiSet="emojiSet"
-            v-model="apiToken"
+          <Account v-show="isSelectedMenu('account')"
+            :apiToken="apiToken"
             :tokenVerified="tokenVerified"
+            :team="team"
+            :user="user"
+            :emojiSet="emojiSet"
+            :signOut="signOut"
           />
           <Auto v-show="isSelectedMenu('auto')" :emojiSet="emojiSet" v-model="auto"/>        
           <EmojiStyle v-show="isSelectedMenu('emoji')" v-model="emojiSet"/>
@@ -74,14 +78,11 @@ function initialize(data) {
       this.$nextTick(() => {
         ipcRenderer.send('readyToShow')
       })
-    },
 
-    watch: {
-      apiToken(apiToken) {
-        this.tokenVerified = false
-        if (!apiToken) return
-        ipcRenderer.send(types.UPDATE_TOKEN, {apiToken})
-      }
+      ipcRenderer.on(types.SET_INFO, (e, {team, user}) => {
+        this.team = team
+        this.user = user
+      })
     },
 
     methods: {
@@ -90,6 +91,22 @@ function initialize(data) {
       },
       isSelectedMenu(type) {
         return this.selectedMenu === type
+      },
+
+      signOut() {
+        axios({
+          url: 'https://slack.com/api/auth.revoke',
+          params: {
+            token: this.apiToken
+          }
+        })
+          .then(res => res.data)
+          .then(res => {
+            if (res.ok && res.revoked) {
+              this.apiToken = null
+              this.update({apiToken: null})
+            }
+          })
       }
     },
 

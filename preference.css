@@ -33,6 +33,7 @@ html, body {
   /*overflow-y: scroll;*/
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .Contents {
@@ -313,3 +314,32 @@ input[name="emojiSet"]:checked + .EmojiType {
   .AutorunList__Add .icon {
     cursor: pointer;
   }
+
+.Account {
+
+}
+  .AccountInfo {
+    display: flex;
+    align-items: center;
+  }
+  .AccountInfo__Icon {
+    width: 35px;
+  }
+  .AccountInfo__Icon img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+  }
+  
+  .AccountInfo__Name {
+    font-size: 16px;
+    margin-left: 5px;
+  }
+
+  .AccountInfo__Signin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  

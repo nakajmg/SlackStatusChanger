@@ -15,10 +15,18 @@ module.exports = {
   CLOSE_PREFERENCE: 'closePreference',
   UPDATE_PREFERENCE: 'updatePreference',
   UPDATE_TOKEN: 'updateToken',
+  GOT_TOKEN: 'gotToken',
+  SET_INFO: 'setInfo',
+  OPEN_SIGNIN: 'openSignin',
   SYNC_STATUS: 'syncStatus',
   CLEAR_STATUS: 'clearStatus',
   CHANGE_PREFERENCE_MENU: 'changePreferenceMenu',
   RESTART_APP: 'restartApp',
   EXIT_APP: 'exitApp',
   READY_TO_SHOW: 'readyToShow',
+
+  GET_WEBVIEW_CONTENT: 'getWebviewContent',
+  DOM_READY: 'dom-ready',
+  DID_NAVIGATE: 'did-navigate',
+  IPC_MESSAGE: 'ipc-message',
 }

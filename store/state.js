@@ -9,6 +9,16 @@ module.exports = {
     status_text: '',
   },
 
+  team: {
+    name: null,
+    icon: null,
+  },
+
+  user: {
+    name: null,
+    icon: null,
+  },
+
   // 自動実行を実行したときのSSIDを保持
   prevSSID: null,
 

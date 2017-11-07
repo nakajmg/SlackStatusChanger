@@ -4,6 +4,7 @@ const axios = require('axios')
 const types = require('./store/types')
 const APIError = require('./APIError')
 const {keys, each, debounce} = require('lodash')
+const Promise = require('bluebird')
 
 function apiErrorReport({name, message}) {
   console.error(name, message)
@@ -24,6 +25,7 @@ menubar.app.once('ready', () => {
 })
 
 let preference = null
+let signinWindow = null
 
 menubar.on('ready', () => {
   let menuWindow = menubar.window.webContents
@@ -56,6 +58,39 @@ menubar.on('ready', () => {
         console.log('sync success')
         menuWindow.send(types.SET_CURRENT_STATUS, body.profile)
       })
+  }
+
+  function getInfo({apiToken}) {
+    return Promise.all([
+      axios({
+        url : 'https://slack.com/api/team.info',
+        method: 'POST',
+        params: {
+          token: apiToken
+        }
+      })
+        .then(res => res.data)
+        .then(res => {
+          const name = res.team.name
+          const icon = res.team.icon.image_original
+          return {name, icon}
+        }),
+
+      axios({
+        url: 'https://slack.com/api/users.profile.get',
+        method: 'POST',
+        params: {
+          token: apiToken
+        }
+      })
+        .then(res => res.data)
+        .then(res => {
+          const name = res.profile.display_name
+          const icon = res.profile.image_original
+          return {name, icon}
+        })
+    ])
+
   }
 
   /**
@@ -145,6 +180,10 @@ menubar.on('ready', () => {
     const listeners = {
       [types.UPDATE_TOKEN](e, {apiToken}) {
         verifyToken({apiToken})
+        if (signinWindow) {
+          signinWindow.close()
+          signinWindow = null
+        }
       },
       [types.READY_TO_SHOW]() {
         preference.show()
@@ -181,6 +220,28 @@ menubar.on('ready', () => {
       if (preference) preference.close()
       menubar.window.close()
     },
+    [types.OPEN_SIGNIN]() {
+      signinWindow = new BrowserWindow({
+        width: 600,
+        height: 600,
+        show: true,
+      })
+      signinWindow.loadURL(`file://${__dirname}/signin.html`)
+    },
+    [types.GOT_TOKEN](e, {apiToken}) {
+      if (signinWindow) {
+        signinWindow.close()
+      }
+      getInfo({apiToken})
+        .then(([team, user]) => {
+          preference.webContents.send(types.SET_INFO, {team, user})
+          menuWindow.send(types.UPDATE_PREFERENCE, {team, user})
+          verifySuccess({apiToken})
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
   }
   each(listeners, (cb, channel) => ipcMain.on(channel, cb))
 
