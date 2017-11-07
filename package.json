@@ -1,6 +1,6 @@
 {
   "name": "SlackStatusChanger",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "To change Slack staus",
   "main": "main.js",
   "scripts": {
