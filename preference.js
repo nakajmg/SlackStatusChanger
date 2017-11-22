@@ -46,7 +46,7 @@ function initialize(data) {
           />
           <Auto v-show="isSelectedMenu('auto')" :emojiSet="emojiSet" v-model="auto"/>        
           <EmojiStyle v-show="isSelectedMenu('emoji')" v-model="emojiSet"/>
-          <Preset v-show="isSelectedMenu('preset')" v-model="preset" :emojiSet="emojiSet"/>
+          <Preset v-show="isSelectedMenu('preset')" v-model="preset" :emojiSet="emojiSet" :customEmojis="team.customEmojis"/>
           <ResetStorage v-show="isSelectedMenu('reset')" :emojiSet="emojiSet" />
         </main>
       </div>

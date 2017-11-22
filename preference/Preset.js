@@ -2,6 +2,7 @@ const {ipcRenderer} = require('electron')
 const types = require('../store/types')
 const {cloneDeep} = require('lodash')
 const {Picker} = require('emoji-mart-vue')
+const {find} = require('lodash')
 
 module.exports = {
   template: `
@@ -17,7 +18,10 @@ module.exports = {
           <div class="control has-icons-left has-icons-right">
             <input class="input is-medium PresetItem__Text" :value="item.status_text" @input="updateText($event, index)">
             <span @click="showPicker(index)" class="icon is-left PresetItem__Emoji">
-              <Emoji :emoji="item.status_emoji" :set="emojiSet" :backgroundImageFn="emojiSheet" :size="24"/>
+              <span v-if="item.custom" class="emoji-mart-emoji emoji">
+                <img :src="imageUrl(item.status_emoji)" alt="" width="24" height="24" style="display: block;">
+              </span>
+              <Emoji v-else :emoji="item.status_emoji" :set="emojiSet" :backgroundImageFn="emojiSheet" :size="24"/>
             </span>
             <span class="icon is-right PresetItem__Remove" @click="removePresetItem(index)">
               <Emoji emoji=":x:" :set="emojiSet" :size="16" :backgroundImageFn="emojiSheet"/>
@@ -42,11 +46,12 @@ module.exports = {
       :emoji="selectedEmoji"
       :backgroundImageFn="emojiSheet" 
       title="Pick a Emoji"
+      :custom="customEmojis"
     />
   </section>
   `,
 
-  props: ['emojiSet', 'value'],
+  props: ['emojiSet', 'value', 'customEmojis'],
 
   data() {
     return {
@@ -85,6 +90,7 @@ module.exports = {
     onClickEmoji(emoji) {
       const status_emoji = emoji.colons
       this.preset[this.selectedIndex].status_emoji = status_emoji
+      this.preset[this.selectedIndex].custom = !!emoji.custom
       this.update(this.preset)
       this.selectedIndex = null
     },
@@ -92,7 +98,8 @@ module.exports = {
     addPresetItem() {
       this.preset.push({
         status_emoji: ':smiley:',
-        status_text: ''
+        status_text: '',
+        custom: false
       })
       this.update(this.preset)
     },
@@ -100,6 +107,13 @@ module.exports = {
     removePresetItem(index) {
       this.preset.splice(index, 1)
       this.update(this.preset)
+    },
+
+    imageUrl(status_emoji) {
+      if (!status_emoji) return ''
+      const name = status_emoji.substring(1, status_emoji.length - 1)
+      const emoji = find(this.customEmojis, {name})
+      return emoji.imageUrl
     }
   },
 

@@ -22,6 +22,7 @@ module.exports = {
      */
     ipcRenderer.on(types.SET_CURRENT_STATUS, (e, profile) => {
       commit(types.SET_CURRENT_STATUS, profile)
+      dispatch(types.SAVE_TO_STORAGE)
     })
 
     ipcRenderer.on(types.CLOSE_PREFERENCE, (e) => {
