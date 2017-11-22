@@ -39,7 +39,7 @@
       return {
         initialized: false,
         token: null,
-        src: `https://slack.com/oauth/authorize?scope=users.profile:read,users.profile:write,team:read&client_id=2320436460.264692834599&redirect_uri=${tokenUrl}`,
+        src: `https://slack.com/oauth/authorize?scope=users.profile:read,users.profile:write,team:read,emoji:read&client_id=2320436460.264692834599&redirect_uri=${tokenUrl}`,
       }
     },
     async mounted() {
