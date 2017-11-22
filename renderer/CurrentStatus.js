@@ -3,6 +3,7 @@ const {mapActions, mapState} = require('vuex')
 const {Picker} = require('emoji-mart-vue')
 const {Emoji} = require('emoji-mart-vue')
 const types = require('../store/types')
+const {find} = require('lodash')
 
 module.exports = {
   template: `
@@ -15,8 +16,14 @@ module.exports = {
           :backgroundImageFn="emojiSheet"
           :size="24"
           @click="showEmojiPicker"
-          v-if="profile.status_emoji"
+          v-if="profile.status_emoji && !profile.custom"
         />
+        <span v-else-if="profile.status_emoji && profile.custom"
+          class="emoji-mart-emoji emoji"
+          @click="showEmojiPicker"
+        >
+          <img :src="imageUrl" alt="" width="24" height="24" style="display: block;">
+        </span>
         <Emoji class="empty emoji"
           title="Pick a Emoji"
           emoji=":smiley:"
@@ -41,6 +48,7 @@ module.exports = {
         title="Pick a Emoji"
         @click="onClickEmoji"
         :backgroundImageFn="emojiSheet"
+        :custom="customEmojis"
        />
     </div>
   `,
@@ -49,10 +57,24 @@ module.exports = {
       pickerVisible: false
     }
   },
-  computed: mapState({
+  computed: assign({
+    imageUrl() {
+      if (this.profile.custom && this.customEmojis) {
+        const name = this.profile.status_emoji.substring(1, this.profile.status_emoji.length - 1)
+        const emoji = find(this.customEmojis, {name})
+        if (emoji) {
+          return emoji.imageUrl
+        }
+      }
+      else {
+        return ''
+      }
+    }
+  }, mapState({
     profile: 'profile',
     emojiSet: 'emojiSet',
-  }),
+    customEmojis: state => state.team.customEmojis
+  })),
   methods: assign({
     showEmojiPicker() {
       this.pickerVisible = true
@@ -60,6 +82,7 @@ module.exports = {
     onClickEmoji(emoji) {
       this.setStatus({
         status_emoji: emoji.colons,
+        custom: emoji.custom
       })
       this.pickerVisible = false
     },

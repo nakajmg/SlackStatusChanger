@@ -7,11 +7,13 @@ module.exports = {
   profile: {
     status_emoji: '',
     status_text: '',
+    custom: false,
   },
 
   team: {
     name: null,
     icon: null,
+    customEmojis: []
   },
 
   user: {
@@ -29,22 +31,27 @@ module.exports = {
     {
       status_emoji: ':house_with_garden:',
       status_text: 'In the house',
+      custom: false,
     },
     {
       status_emoji: ':office:',
       status_text: 'In the office',
+      custom: false,
     },
     {
       status_emoji: ':face_with_thermometer:',
       status_text: 'Out sick',
+      custom: false,
     },
     {
       status_emoji: ':palm_tree:',
-      status_text: 'Vacationing'
+      status_text: 'Vacationing',
+      custom: false,
     },
     {
       status_emoji: ':bus:',
-      status_text: 'Commuting'
+      status_text: 'Commuting',
+      custom: false,
     },
   ],
 

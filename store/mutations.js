@@ -30,5 +30,13 @@ module.exports = {
     each(payload, (value, key) => {
       state[key] = value
     })
+  },
+
+  [types.SET_CUSTOM_EMOJI](state, {customEmojis}) {
+    state.team.customEmojis = customEmojis
+  },
+
+  [types.SET_PROFILE_CUSTOM](state, {custom}) {
+    state.profile.custom = !!custom
   }
 }

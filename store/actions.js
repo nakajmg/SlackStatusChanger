@@ -6,6 +6,7 @@ const assign = require('object-assign')
 const Promise = require('bluebird')
 const getStorage = Promise.promisify(storage.get)
 const setStorage = Promise.promisify(storage.set)
+const axios = require('axios')
 
 module.exports = {
   [types.INITIALIZE_STORE]({commit, dispatch}) {
@@ -59,12 +60,13 @@ module.exports = {
   [types.SYNC_STATUS]({state}) {
     ipcRenderer.send(types.SYNC_STATUS, {apiToken: state.apiToken})
   },
-  [types.SET_CURRENT_STATUS]({state}, {status_emoji, status_text}) {
+  [types.SET_CURRENT_STATUS]({state, commit}, {status_emoji, status_text, custom}) {
     ipcRenderer.send(types.SET_CURRENT_STATUS, {
       status_emoji: isUndefined(status_emoji) ? state.profile.status_emoji : status_emoji,
       status_text: isUndefined(status_text) ? state.profile.status_text : status_text,
       apiToken: state.apiToken,
     })
+    commit(types.SET_PROFILE_CUSTOM, {custom})
   },
   [types.OPEN_PREFERENCE]({state}, preferenceName) {
     preferenceName = preferenceName || 'preset'
@@ -86,7 +88,10 @@ module.exports = {
 
     ipcRenderer.on(types.TOKEN_VERIFIED, (e, {apiToken}) => {
       commit(types.TOKEN_VERIFIED, {apiToken})
-      dispatch(types.AFTER_INITIALIZE)
+      return dispatch(types.SET_CUSTOM_EMOJI)
+        .then(() => {
+          return dispatch(types.AFTER_INITIALIZE)
+        })
     })
   },
 
@@ -94,6 +99,34 @@ module.exports = {
     dispatch(types.SAVE_TO_STORAGE)
       .then(() => {
         commit(types.AFTER_INITIALIZE)
+      })
+  },
+
+  [types.SET_CUSTOM_EMOJI]({state, commit}) {
+    const url = 'https://slack.com/api/emoji.list'
+    return axios({
+      url,
+      method: 'POST',
+      params: {
+        token: state.apiToken,
+      }
+    })
+      .then(res => res.data)
+      .then(body => {
+        if (!body.ok) return
+        const customEmojis = Object.keys(body.emoji).map((name) => {
+          const imageUrl = body.emoji[name]
+          return {
+            name,
+            short_names: [name],
+            text: '',
+            emoticons: [],
+            keywords: ['reacji'],
+            imageUrl,
+            custom: true
+          }
+        })
+        commit(types.SET_CUSTOM_EMOJI, {customEmojis})
       })
   },
 
