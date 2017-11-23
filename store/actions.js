@@ -162,14 +162,14 @@ module.exports = {
   },
 
   [types.SUSPENDED]: async ({state, dispatch}) => {
+    if (!state.suspend.enable) return
     const ssid = await wifiName().catch(err => console.log(err))
     if (!ssid) return console.log('SSIDない')
-    const status = find(state.auto.settings, (setting) => {
+    const status = find(state.suspend.settings, (setting) => {
       return includes(setting.ssid.split(','), ssid)
     })
 
-    if (!status) return
-    if (!(status.suspend && status.suspend.enable)) return
+    if (!status || !status.enable) return
 
     const prevProfile = assign({}, state.profile)
     ipcRenderer.once(types.RESUMED, (e) => {

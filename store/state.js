@@ -63,20 +63,14 @@ module.exports = {
   // statusの自動切り替え
   auto: {
     enable: false,
-    interval: 300,
+    interval: 120,
     settings: [
       {
-        enable: true,
-        ssid: 'jmghome',
+        enable: false,
+        ssid: '',
         status_emoji: ':house_with_garden:',
         status_text: 'In the house',
         custom: false,
-        suspend: {
-          enable: true,
-          status_emoji: ':sleepy:',
-          status_text: 'PCがサスペンドした',
-          custom: false,
-        },
       },
       {
         enable: false,
@@ -84,13 +78,26 @@ module.exports = {
         status_emoji: ':office:',
         status_text: 'In the office',
         custom: false,
-        suspend: {
-          enable: true,
-          status_emoji: ':runner:',
-          status_text: 'In the house',
-          custom: false,
-        },
       }
+    ]
+  },
+  suspend: {
+    enable: false,
+    settings: [
+      {
+        enable: false,
+        ssid: '',
+        status_emoji: ':sleepy:',
+        status_text: 'AFK',
+        custom: false,
+      },
+      {
+        enable: false,
+        ssid: '',
+        status_emoji: ':information_source:',
+        status_text: 'Maybe moving or AFK',
+        custom: false,
+      },
     ]
   },
 
