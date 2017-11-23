@@ -44,10 +44,10 @@
   width: 320px;
 }
 .section {
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid #dcdcdc;
 }
 .section:nth-of-type(2n + 1) {
-  background-color: rgb(251, 251, 251);
+  background-color: whitesmoke;
 }
 .section .title {
   /*margin-bottom: 1em;*/
@@ -67,7 +67,11 @@
 }
 
 .section.-dl {
-  /*background-color: #deeefd;*/
+  background-color: #209cee;
+  color: #fff;
+}
+.section.-dl .title{
+  color: #fff;
 }
 
 .cb {
