@@ -29,6 +29,11 @@ module.exports = {
           type: 'auto',
         },
         {
+          label: 'Suspend',
+          emoji: ':sleepy:',
+          type: 'suspend',
+        },
+        {
           label: 'Emoji',
           emoji: ':smiley:',
           type: 'emoji',

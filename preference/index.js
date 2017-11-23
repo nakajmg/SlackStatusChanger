@@ -6,6 +6,7 @@ const Auto = require('./Auto')
 const ErrorReport = require('./ErrorReport')
 const ResetStorage = require('./ResetStorage')
 const Account = require('./Account')
+const Suspend = require('./Suspend')
 
 module.exports = {
   EmojiStyle,
@@ -16,4 +17,5 @@ module.exports = {
   ErrorReport,
   ResetStorage,
   Account,
+  Suspend,
 }

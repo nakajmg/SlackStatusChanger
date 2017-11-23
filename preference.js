@@ -46,7 +46,8 @@ function initialize(data) {
             :emojiSet="emojiSet"
             :signOut="signOut"
           />
-          <Auto v-show="isSelectedMenu('auto')" :emojiSet="emojiSet" v-model="auto" :customEmojis="team.customEmojis"/>        
+          <Auto v-show="isSelectedMenu('auto')" :emojiSet="emojiSet" v-model="auto" :customEmojis="team.customEmojis"/>
+          <Suspend v-show="isSelectedMenu('suspend')" :emojiSet="emojiSet" v-model="suspend" :customEmojis="team.customEmojis"/>
           <EmojiStyle v-show="isSelectedMenu('emoji')" v-model="emojiSet"/>
           <Preset v-show="isSelectedMenu('preset')" v-model="preset" :emojiSet="emojiSet" :customEmojis="team.customEmojis"/>
           <ResetStorage v-show="isSelectedMenu('reset')" :emojiSet="emojiSet" />

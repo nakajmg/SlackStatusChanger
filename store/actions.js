@@ -144,18 +144,22 @@ module.exports = {
 
   [types.SET_CURRENT_SSID]({state, commit, dispatch}, {ssid}) {
     // ないときはprevのssid変えていいかも。日付またいでオフィスtoオフィスな場合にSSIDが一緒で自動でステータス変更が有効にならない
-    if (!ssid) return console.log('SSIDない')
-    if (ssid === state.prevSSID) return console.log('SSID変わってない')
+    // SSIDないからなにもしない
+    if (!ssid) return
+    // SSID変わってないから何もしない
+    if (ssid === state.prevSSID) return
 
     const status = find(state.auto.settings, (setting) => {
       return includes(setting.ssid.split(','), ssid)
     })
 
-    if (!status || !status.enable) return console.log('設定がないかdisableになってる')
+    // 設定がないかdisableになってる'
+    if (!status || !status.enable) return
 
     const {status_emoji, status_text} = status
+    // status変化なし
     if ( state.profile.status_text === status_text
-      && state.profile.status_emoji === status_emoji) return console.log('変化なし')
+      && state.profile.status_emoji === status_emoji) return
 
     dispatch(types.SET_CURRENT_STATUS, {status_emoji, status_text})
     commit(types.SET_CURRENT_SSID, {ssid})
@@ -164,7 +168,7 @@ module.exports = {
   [types.SUSPENDED]: async ({state, dispatch}) => {
     if (!state.suspend.enable) return
     const ssid = await wifiName().catch(err => console.log(err))
-    if (!ssid) return console.log('SSIDない')
+    if (!ssid) return
     const status = find(state.suspend.settings, (setting) => {
       return includes(setting.ssid.split(','), ssid)
     })
@@ -176,12 +180,12 @@ module.exports = {
       dispatch(types.RESUMED, {prevSSID: ssid, prevProfile})
     })
 
-    dispatch(types.SET_CURRENT_STATUS, status.suspend)
+    dispatch(types.SET_CURRENT_STATUS, status)
   },
 
   [types.RESUMED]: async({dispatch}, {prevSSID, prevProfile}) => {
     const ssid = await wifiName().catch(err => console.log(err))
-    if (!ssid) return console.log('SSIDない')
+    if (!ssid) return
     if (ssid !== prevSSID) return
     dispatch(types.SET_CURRENT_STATUS, prevProfile)
   },
