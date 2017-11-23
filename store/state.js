@@ -65,12 +65,14 @@ module.exports = {
         ssid: '',
         status_emoji: ':house_with_garden:',
         status_text: 'In the house',
+        custom: false,
       },
       {
         enable: false,
         ssid: '',
         status_emoji: ':office:',
         status_text: 'In the office',
+        custom: false,
       }
     ]
   },

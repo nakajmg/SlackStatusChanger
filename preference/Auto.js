@@ -3,6 +3,7 @@ const types = require('../store/types')
 const {cloneDeep, toNumber} = require('lodash')
 const assign = require('object-assign')
 const {Picker} = require('emoji-mart-vue')
+const {find} = require('lodash')
 
 module.exports = {
   template: `
@@ -65,7 +66,10 @@ module.exports = {
         
         <label class="control has-icons-left AutorunList__ItemStatus">
           <span @click="showPicker(index)" class="icon is-left AutorunList__ItemEmoji">
-            <Emoji :size="20" :emoji="setting.status_emoji" :set="emojiSet" :backgroundImageFn="emojiSheet"/>
+            <span v-if="setting.custom" class="emoji-mart-emoji emoji">
+              <img :src="imageUrl(setting.status_emoji)" alt="" width="24" height="24" style="display: block;">
+            </span>
+            <Emoji v-else :size="20" :emoji="setting.status_emoji" :set="emojiSet" :backgroundImageFn="emojiSheet"/>
           </span>
           <input class="input"
             :value="setting.status_text"
@@ -101,7 +105,7 @@ module.exports = {
   </section>
   `,
 
-  props: ['emojiSet', 'value'],
+  props: ['emojiSet', 'value', 'customEmojis'],
 
   data() {
     return {
@@ -159,6 +163,7 @@ module.exports = {
         ssid: '',
         status_emoji: ':smiley:',
         status_text: '',
+        custom: false,
       })
       this.update({settings})
     },
@@ -175,8 +180,15 @@ module.exports = {
     onClickEmoji(emoji) {
       const settings = cloneDeep(this.value.settings)
       settings[this.selectedIndex].status_emoji = emoji.colons
+      settings[this.selectedIndex].custom = !!emoji.custom
       this.update({settings})
       this.selectedIndex = null
+    },
+    imageUrl(status_emoji) {
+      if (!status_emoji) return ''
+      const name = status_emoji.substring(1, status_emoji.length - 1)
+      const emoji = find(this.customEmojis, {name})
+      return emoji.imageUrl
     },
   },
 
