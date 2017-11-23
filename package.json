@@ -22,6 +22,7 @@
     "emoji-mart-vue": "^1.0.2",
     "lodash": "^4.17.4",
     "menubar": "^5.2.3",
+    "mousetrap": "^1.6.1",
     "object-assign": "^4.1.1",
     "query-string": "^5.0.1",
     "vue": "^2.5.2",

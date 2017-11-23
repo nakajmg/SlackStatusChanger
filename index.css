@@ -112,6 +112,8 @@ html, body {
     display: inline-flex;
     align-items: center;
     padding: 5px;
+    min-width: 32px;
+    box-sizing: border-box;
   }
   .CurrentStatus .emoji-mart-emoji {
     /*padding: 5px;*/
