@@ -7,6 +7,7 @@ const Promise = require('bluebird')
 const getStorage = Promise.promisify(storage.get)
 const setStorage = Promise.promisify(storage.set)
 const axios = require('axios')
+const wifiName = require('wifi-name')
 
 module.exports = {
   [types.INITIALIZE_STORE]({commit, dispatch, state}) {
@@ -34,6 +35,10 @@ module.exports = {
 
     ipcRenderer.on(types.CLOSE_PREFERENCE, (e) => {
       // console.log('preference closed')
+    })
+
+    ipcRenderer.on(types.SUSPENDED, (e) => {
+      dispatch(types.SUSPENDED)
     })
 
     return dispatch(types.RESTORE_FROM_STORAGE)
@@ -154,6 +159,31 @@ module.exports = {
 
     dispatch(types.SET_CURRENT_STATUS, {status_emoji, status_text})
     commit(types.SET_CURRENT_SSID, {ssid})
+  },
+
+  [types.SUSPENDED]: async ({state, dispatch}) => {
+    const ssid = await wifiName().catch(err => console.log(err))
+    if (!ssid) return console.log('SSIDない')
+    const status = find(state.auto.settings, (setting) => {
+      return includes(setting.ssid.split(','), ssid)
+    })
+
+    if (!status) return
+    if (!(status.suspend && status.suspend.enable)) return
+
+    const prevProfile = assign({}, state.profile)
+    ipcRenderer.once(types.RESUMED, (e) => {
+      dispatch(types.RESUMED, {prevSSID: ssid, prevProfile})
+    })
+
+    dispatch(types.SET_CURRENT_STATUS, status.suspend)
+  },
+
+  [types.RESUMED]: async({dispatch}, {prevSSID, prevProfile}) => {
+    const ssid = await wifiName().catch(err => console.log(err))
+    if (!ssid) return console.log('SSIDない')
+    if (ssid !== prevSSID) return
+    dispatch(types.SET_CURRENT_STATUS, prevProfile)
   },
 
   [types.EXIT_APP]() {

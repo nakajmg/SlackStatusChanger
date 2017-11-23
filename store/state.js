@@ -66,11 +66,17 @@ module.exports = {
     interval: 300,
     settings: [
       {
-        enable: false,
-        ssid: '',
+        enable: true,
+        ssid: 'jmghome',
         status_emoji: ':house_with_garden:',
         status_text: 'In the house',
         custom: false,
+        suspend: {
+          enable: true,
+          status_emoji: ':sleepy:',
+          status_text: 'PCがサスペンドした',
+          custom: false,
+        },
       },
       {
         enable: false,
@@ -78,6 +84,12 @@ module.exports = {
         status_emoji: ':office:',
         status_text: 'In the office',
         custom: false,
+        suspend: {
+          enable: true,
+          status_emoji: ':runner:',
+          status_text: 'In the house',
+          custom: false,
+        },
       }
     ]
   },

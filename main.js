@@ -34,6 +34,14 @@ menubar.on('ready', () => {
     app.quit()
   })
 
+  const {powerMonitor} = require('electron')
+  powerMonitor.on('suspend', () => {
+    menuWindow.send(types.SUSPENDED)
+  })
+  powerMonitor.on('resume', () => {
+    menuWindow.send(types.RESUMED)
+  })
+
   /**
    * for debug
    */

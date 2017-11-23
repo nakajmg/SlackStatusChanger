@@ -26,6 +26,8 @@ module.exports = {
   READY_TO_SHOW: 'readyToShow',
   SET_CUSTOM_EMOJI: 'setCustomEmoji',
   SET_PROFILE_CUSTOM: 'setProfileCustom',
+  SUSPENDED: 'suspended',
+  RESUMED: 'resumed',
 
   GET_WEBVIEW_CONTENT: 'getWebviewContent',
   DOM_READY: 'dom-ready',
