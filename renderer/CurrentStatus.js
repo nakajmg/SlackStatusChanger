@@ -16,7 +16,7 @@ module.exports = {
           emoji=":smiley:"
           :set="emojiSet"
           :backgroundImageFn="emojiSheet"
-          :size="24"
+          :size="20"
           v-else
         />
         </span>
