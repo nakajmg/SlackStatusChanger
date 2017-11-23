@@ -3,6 +3,7 @@ const {mapActions, mapState} = require('vuex')
 const {Picker} = require('emoji-mart-vue')
 const {Emoji} = require('emoji-mart-vue')
 const types = require('../store/types')
+const Mousetrap = require('mousetrap')
 
 module.exports = {
   template: `
@@ -50,6 +51,9 @@ module.exports = {
     emojiSet: 'emojiSet',
     customEmojis: state => state.team.customEmojis
   })),
+  created() {
+    this.bindShortcut()
+  },
   methods: assign({
     showEmojiPicker() {
       this.pickerVisible = true
@@ -65,6 +69,11 @@ module.exports = {
       const status_text = target.value
       this.setStatus({
         status_text,
+      })
+    },
+    bindShortcut() {
+      Mousetrap.bind('esc', () => {
+        this.pickerVisible = false
       })
     },
   }, mapActions({

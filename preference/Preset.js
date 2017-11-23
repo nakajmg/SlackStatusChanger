@@ -2,6 +2,7 @@ const {ipcRenderer} = require('electron')
 const types = require('../store/types')
 const {cloneDeep} = require('lodash')
 const {Picker} = require('emoji-mart-vue')
+const Mousetrap = require('mousetrap')
 
 module.exports = {
   template: `
@@ -77,6 +78,7 @@ module.exports = {
 
     showPicker(index) {
       this.selectedIndex = index
+      this.bindShortcut()
     },
 
     update(preset) {
@@ -89,6 +91,7 @@ module.exports = {
       this.preset[this.selectedIndex].custom = !!emoji.custom
       this.update(this.preset)
       this.selectedIndex = null
+      this.unbindShortcut()
     },
 
     addPresetItem() {
@@ -103,6 +106,16 @@ module.exports = {
     removePresetItem(index) {
       this.preset.splice(index, 1)
       this.update(this.preset)
+    },
+
+    bindShortcut() {
+      Mousetrap.bind('esc', () => {
+        this.selectedIndex = null
+        this.unbindShortcut()
+      })
+    },
+    unbindShortcut() {
+      Mousetrap.unbind('esc')
     },
   },
 

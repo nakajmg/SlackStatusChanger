@@ -3,6 +3,7 @@ const types = require('../store/types')
 const {cloneDeep, toNumber} = require('lodash')
 const assign = require('object-assign')
 const {Picker} = require('emoji-mart-vue')
+const Mousetrap = require('mousetrap')
 
 module.exports = {
   template: `
@@ -64,7 +65,7 @@ module.exports = {
         </label>
         
         <label class="control has-icons-left AutorunList__ItemStatus">
-          <span @click="showPicker(index)" class="icon is-left AutorunList__ItemEmoji">
+          <span @click.prevent="showPicker(index)" class="icon is-left AutorunList__ItemEmoji">
             <CustomEmoji :item="setting" :emojiSet="emojiSet" :customEmojis="customEmojis" />
           </span>
           <input class="input"
@@ -97,6 +98,7 @@ module.exports = {
       :backgroundImageFn="emojiSheet" 
       title="Pick a Emoji"
       @click="onClickEmoji"
+      ref="picker"
     />
   </section>
   `,
@@ -172,6 +174,7 @@ module.exports = {
 
     showPicker(index) {
       this.selectedIndex = index
+      this.bindShortcut()
     },
     onClickEmoji(emoji) {
       const settings = cloneDeep(this.value.settings)
@@ -179,6 +182,16 @@ module.exports = {
       settings[this.selectedIndex].custom = !!emoji.custom
       this.update({settings})
       this.selectedIndex = null
+      this.unbindShortcut()
+    },
+    bindShortcut() {
+      Mousetrap.bind('esc', () => {
+        this.selectedIndex = null
+        this.unbindShortcut()
+      })
+    },
+    unbindShortcut() {
+      Mousetrap.unbind('esc')
     },
   },
 
