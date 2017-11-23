@@ -5,7 +5,8 @@ const {mapState, mapActions} = require('vuex')
 const types = require('./store/types')
 const components = require('./renderer/index.js')
 const {Emoji} = require('emoji-mart-vue')
-
+const CustomEmoji = require('./renderer/CustomEmoji')
+Vue.component('CustomEmoji', CustomEmoji)
 Vue.mixin({
   methods: {
     emojiSheet(set, size) {
@@ -73,5 +74,6 @@ new Vue({
   components: assign({
     // local components
     Emoji,
+    CustomEmoji
   }, components)
 })

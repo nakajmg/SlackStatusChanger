@@ -9,10 +9,7 @@ module.exports = {
     <div class="StatusList">
       <div class="StatusList-Label">Preset (<span @click="openPreference()" class="edit">edit</span>)</div>
       <div @click="setStatus(item)" v-for="item in items" class="StatusList-Item">
-        <span v-if="item.custom" class="emoji-mart-emoji emoji">
-          <img :src="imageUrl(item.status_emoji)" alt="" width="24" height="24" style="display: block;">
-        </span>
-        <Emoji v-else :backgroundImageFn="emojiSheet" :emoji="item.status_emoji" :set="emojiSet" :title="item.status_emoji" :size="24"></Emoji>
+        <CustomEmoji :item="item" :emojiSet="emojiSet" :customEmojis="customEmojis" />
         <span class="text">{{item.status_text}}</span>
       </div>
     </div>

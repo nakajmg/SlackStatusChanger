@@ -107,12 +107,18 @@ html, body {
     align-items: stretch;
     flex-grow: 1;
   }
-  .CurrentStatus .emoji-mart-emoji {
+  .CurrentStatus .status-emoji {
+    border-right: 1px solid #a0a0a2;
+    display: inline-flex;
+    align-items: center;
     padding: 5px;
+  }
+  .CurrentStatus .emoji-mart-emoji {
+    /*padding: 5px;*/
     cursor: pointer;
   }
   .CurrentStatus .emoji {
-    border-right: 1px solid #a0a0a2;
+    /*border-right: 1px solid #a0a0a2;*/
   }
   .CurrentStatus .text {
     flex-grow: 1;
@@ -132,8 +138,8 @@ html, body {
 
   .CurrentStatus .clear {
     position: absolute !important;
-    right: 0;
-    top: 0;
+    right: 5px;
+    top: 7px;
     opacity: 0.5;
   }
     .CurrentStatus .clear:hover {

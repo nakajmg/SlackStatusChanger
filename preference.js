@@ -1,5 +1,6 @@
 const {ipcRenderer} = require('electron')
 const {Emoji} = require('emoji-mart-vue')
+const CustomEmoji = require('./preference/CustomEmoji')
 const Vue = require('vue/dist/vue.common')
 const storage = require('electron-json-storage')
 const assign = require('object-assign')
@@ -9,6 +10,7 @@ const queryString = require('query-string')
 const axios = require('axios')
 
 Vue.component('Emoji', Emoji)
+Vue.component('CustomEmoji', CustomEmoji)
 Vue.mixin({
   methods: {
     emojiSheet(set, size) {

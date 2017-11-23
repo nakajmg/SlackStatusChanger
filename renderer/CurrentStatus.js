@@ -9,30 +9,18 @@ module.exports = {
   template: `
     <div class="CurrentStatus">
       <div class="status">
-        <Emoji class="emoji"
-          :title="profile.status_emoji"
-          :emoji="profile.status_emoji"
-          :set="emojiSet"
-          :backgroundImageFn="emojiSheet"
-          :size="24"
-          @click="showEmojiPicker"
-          v-if="profile.status_emoji && !profile.custom"
-        />
-        <span v-else-if="profile.status_emoji && profile.custom"
-          class="emoji-mart-emoji emoji"
-          @click="showEmojiPicker"
-        >
-          <img :src="imageUrl" alt="" width="24" height="24" style="display: block;">
-        </span>
-        <Emoji class="empty emoji"
+        <span class="status-emoji" @click="showEmojiPicker">
+          <CustomEmoji v-if="profile.status_emoji" :item="profile" :emojiSet="emojiSet" :customEmojis="customEmojis" />
+          <Emoji class="empty emoji"
           title="Pick a Emoji"
           emoji=":smiley:"
-          @click="showEmojiPicker"
           :set="emojiSet"
           :backgroundImageFn="emojiSheet"
           :size="24"
           v-else
         />
+        </span>
+        
         <span class="text">
           <input type="text" :value="profile.status_text" @change="onChangeText" title="Input your status">
           <Emoji @click="clearStatus" class="clear" emoji=":x:" :set="emojiSet" title="Clear Status" :backgroundImageFn="emojiSheet" :size="18"/>

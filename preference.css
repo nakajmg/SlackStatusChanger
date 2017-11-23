@@ -180,7 +180,7 @@ input[name="emojiSet"]:checked + .EmojiType {
 }
 
 .PresetItems {
-  max-height: 190px;
+  max-height: 200px;
   overflow: scroll;
 }
 

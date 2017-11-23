@@ -223,7 +223,7 @@ menubar.on('ready', () => {
     [types.OPEN_SIGNIN]() {
       signinWindow = new BrowserWindow({
         width: 600,
-        height: 660,
+        height: 680,
         show: true,
       })
       signinWindow.loadURL(`file://${__dirname}/signin.html`)
