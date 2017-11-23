@@ -30,7 +30,7 @@ module.exports = {
         },
         {
           label: 'Suspend',
-          emoji: ':sleepy:',
+          emoji: ':zzz:',
           type: 'suspend',
         },
         {

@@ -12,8 +12,8 @@ module.exports = {
     
       <div class="control" style="margin-right: 10px;">
         <label class="label Contents__Label">
-          <Emoji emoji=":signal_strength:" :set="emojiSet" :size="20" :backgroundImageFn="emojiSheet" />
-          <span>Suspended or Resumed</span>
+          <Emoji emoji=":zzz:" :set="emojiSet" :size="20" :backgroundImageFn="emojiSheet" />
+          <span>Suspend</span>
         </label>
         
         <div class="control">
@@ -37,7 +37,7 @@ module.exports = {
       
     </div>
     
-    <div class="field">This feature automatically changes your status <br> when your computer is suspended or resumed.</div>
+    <div class="field">This feature automatically changes your status <br> when your computer is suspended (and resumed).</div>
     
     <div v-if="value.settings.length" class="AutorunList" :class="{'-Enable': value.enable}">
       <div v-for="(setting, index) in value.settings" class="AutorunList__Item">
@@ -83,7 +83,7 @@ module.exports = {
       :set="emojiSet"
       :sheetSize="32"
       :emoji="selectedEmoji"
-      :backgroundImageFn="emojiSheet" 
+      :backgroundImageFn="emojiSheet"
       title="Pick a Emoji"
       @click="onClickEmoji"
       ref="picker"
