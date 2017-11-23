@@ -74,6 +74,7 @@ function initialize(data) {
       ipcRenderer.on(types.TOKEN_VERIFIED, (e, {apiToken}) => {
         this.tokenVerified = true
         this.apiToken = apiToken
+        this.setCustomEmojis(apiToken)
         this.error = null
       })
 
@@ -109,7 +110,35 @@ function initialize(data) {
               this.update({apiToken: null})
             }
           })
+      },
+      setCustomEmojis(apiToken) {
+        const url = 'https://slack.com/api/emoji.list'
+        return axios({
+          url,
+          method: 'POST',
+          params: {
+            token: apiToken,
+          }
+        })
+          .then(res => res.data)
+          .then(body => {
+            if (!body.ok) return
+            const customEmojis = Object.keys(body.emoji).map((name) => {
+              const imageUrl = body.emoji[name]
+              return {
+                name,
+                short_names: [name],
+                text: '',
+                emoticons: [],
+                keywords: ['reacji'],
+                imageUrl,
+                custom: true
+              }
+            })
+            this.$set(this.team, 'customEmojis', customEmojis)
+          })
       }
+
     },
 
     components: assign({}, components)

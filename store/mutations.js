@@ -8,9 +8,10 @@ module.exports = {
     assign(state, data)
   },
 
-  [types.SET_CURRENT_STATUS](state, {status_emoji, status_text}) {
+  [types.SET_CURRENT_STATUS](state, {status_emoji, status_text, custom}) {
     state.profile.status_emoji = status_emoji
     state.profile.status_text = status_text
+    state.profile.custom = custom
   },
 
   [types.SET_CURRENT_SSID](state, {ssid}) {

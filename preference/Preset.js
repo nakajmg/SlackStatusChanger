@@ -2,7 +2,6 @@ const {ipcRenderer} = require('electron')
 const types = require('../store/types')
 const {cloneDeep} = require('lodash')
 const {Picker} = require('emoji-mart-vue')
-const {find} = require('lodash')
 
 module.exports = {
   template: `

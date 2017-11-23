@@ -53,6 +53,11 @@ module.exports = {
       status_text: 'Commuting',
       custom: false,
     },
+    {
+      status_emoji: ':slack:',
+      status_text: 'Status with Custom-Emoji',
+      custom: true,
+    },
   ],
 
   // statusの自動切り替え

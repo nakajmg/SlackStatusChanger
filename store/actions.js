@@ -9,7 +9,7 @@ const setStorage = Promise.promisify(storage.set)
 const axios = require('axios')
 
 module.exports = {
-  [types.INITIALIZE_STORE]({commit, dispatch}) {
+  [types.INITIALIZE_STORE]({commit, dispatch, state}) {
     ipcRenderer.on(types.UPDATE_PREFERENCE, (e, payload) => {
       commit(types.UPDATE_PREFERENCE, payload)
       dispatch(types.SAVE_TO_STORAGE)
@@ -21,6 +21,13 @@ module.exports = {
      * @param {string} profile.status_text
      */
     ipcRenderer.on(types.SET_CURRENT_STATUS, (e, profile) => {
+      // custom emojiかどうか判定
+      if (state.team.customEmojis.length !== 0) {
+        const name = profile.status_emoji.substring(1, profile.status_emoji.length - 1)
+        const emoji = find(state.team.customEmojis, {name})
+        // emojiが見つかればcustom=true
+        profile.custom = !!emoji
+      }
       commit(types.SET_CURRENT_STATUS, profile)
       dispatch(types.SAVE_TO_STORAGE)
     })
@@ -87,12 +94,11 @@ module.exports = {
       ipcRenderer.send(types.INITIALIZE_STATUS, {apiToken: state.apiToken})
     }
 
-    ipcRenderer.on(types.TOKEN_VERIFIED, (e, {apiToken}) => {
+    ipcRenderer.on(types.TOKEN_VERIFIED, async (e, {apiToken}) => {
       commit(types.TOKEN_VERIFIED, {apiToken})
-      return dispatch(types.SET_CUSTOM_EMOJI)
-        .then(() => {
-          return dispatch(types.AFTER_INITIALIZE)
-        })
+      await dispatch(types.SET_CUSTOM_EMOJI)
+      await dispatch(types.SYNC_STATUS)
+      await dispatch(types.AFTER_INITIALIZE)
     })
   },
 

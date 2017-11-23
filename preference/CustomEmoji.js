@@ -13,7 +13,7 @@ module.exports = {
   ],
   methods: {
     imageUrl(status_emoji) {
-      if (!status_emoji) return ''
+      if (!status_emoji || this.customEmojis.length === 0) return ''
       const name = status_emoji.substring(1, status_emoji.length - 1)
       const emoji = find(this.customEmojis, {name})
       return emoji.imageUrl

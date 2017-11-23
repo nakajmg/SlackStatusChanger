@@ -3,7 +3,6 @@ const {mapActions, mapState} = require('vuex')
 const {Picker} = require('emoji-mart-vue')
 const {Emoji} = require('emoji-mart-vue')
 const types = require('../store/types')
-const {find} = require('lodash')
 
 module.exports = {
   template: `
@@ -46,18 +45,6 @@ module.exports = {
     }
   },
   computed: assign({
-    imageUrl() {
-      if (this.profile.custom && this.customEmojis) {
-        const name = this.profile.status_emoji.substring(1, this.profile.status_emoji.length - 1)
-        const emoji = find(this.customEmojis, {name})
-        if (emoji) {
-          return emoji.imageUrl
-        }
-      }
-      else {
-        return ''
-      }
-    }
   }, mapState({
     profile: 'profile',
     emojiSet: 'emojiSet',

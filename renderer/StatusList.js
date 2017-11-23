@@ -1,8 +1,6 @@
 const {mapActions, mapState} = require('vuex')
-const {Emoji} = require('emoji-mart-vue')
 const types = require('../store/types')
 const assign = require('object-assign')
-const {find} = require('lodash')
 
 module.exports = {
   template: `
@@ -23,14 +21,7 @@ module.exports = {
     setStatus: types.SET_CURRENT_STATUS,
     openPreference: types.OPEN_PREFERENCE,
   }), {
-    imageUrl(status_emoji) {
-      if (!status_emoji) return ''
-      const name = status_emoji.substring(1, status_emoji.length - 1)
-      const emoji = find(this.customEmojis, {name})
-      return emoji.imageUrl
-    }
   }),
   components: {
-    Emoji
   }
 }
